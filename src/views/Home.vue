@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td class="text">Comuna</td>
-        <td>{{socio.direccion_comuna}}</td>
+        <td>{{socio.direccion_comuna.comuna_nombre}}</td>
       </tr>
       <tr>
         <td class="text">Nivel educacional</td>
