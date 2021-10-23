@@ -1,16 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
+    {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -19,7 +13,22 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "about" */ '../views/About.vue')
     }
+  },
+  {
+    path: '/buscador',
+    name: 'Buscador',
+    component: function () {
+      return import('../views/Buscador.vue')
+    }
+  },
+  {
+    path: '/editor',
+    name: 'Editor',
+    component: function () {
+      return import('../views/Editor.vue')
+    }
   }
+  
 ]
 
 const router = new VueRouter({

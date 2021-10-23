@@ -7,6 +7,12 @@ export const service = {
     get(id) {
         return ApiService.get(url, { slug: id });
     },
+    getByName(token) {
+        return ApiService.get(url+'/buscar/nombre', { slug: token });
+    },
+    getByApellido(token) {
+        return ApiService.get(url+'/buscar/apellido', { slug: token });
+    },
     create(params) {
         return ApiService.post(url, { params: params });
     },

@@ -1,28 +1,61 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar
+      app
+      color="#70C1B3"
+      flat
+    >
+      <v-avatar
+        :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
+        size="32"
+      ></v-avatar>
+      <v-tabs
+        centered
+        class="ml-n9"
+        color="#1D2F6F"
+      >
+        <v-tab
+          v-for="link in links"
+          :key="link.name"
+          :to="link.to"
+          
+        >
+          {{ link.name }}
+        </v-tab>
+      </v-tabs>
+      <v-avatar
+        class="hidden-sm-and-down"
+        color="grey darken-1 shrink"
+        size="32"
+      ></v-avatar>
+    </v-app-bar>
+    <v-main class="grey lighten-3">
+      <router-view/>
+    </v-main>
+    
+  </v-app>
 </template>
 
+<script>
+
+export default {
+  name: 'App',
+
+  data: () => ({
+    links: [
+      {name: 'Home', to: '/Home'},
+      {name: 'Buscar', to: '/Buscador'},
+      {name: 'Editar', to: '/Editor'},
+      ]
+  }),
+};
+</script>
+
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.nombre-dato{
+  background-color: cornflowerblue;
 }
 </style>
