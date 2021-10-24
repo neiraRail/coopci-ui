@@ -25,16 +25,7 @@
           md="2"
           order-md="last"
         >
-        <v-sheet rounded="lg" min-height="160">
-          <v-container>
-            <v-row>              
-              <v-col><v-btn block @click="recargar">Restablecer</v-btn></v-col>
-            </v-row>
-            <v-row>
-              <v-col><v-btn block @click="editar">Guardar</v-btn></v-col>
-            </v-row>
-          </v-container>
-        </v-sheet>
+          <ControlesEdicion />
         </v-col>
       </v-row>
     </v-container>
@@ -42,15 +33,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-var cloneDeep = require('lodash.clonedeep');
+import { mapActions, mapState } from 'vuex'
 export default {
   data(){
     return {
     }
   },
   components: {
-    CamposEdicion: ()=>import('@/components/CamposEdicion')
+    CamposEdicion: () => import("@/components/CamposEdicion"),
+    ControlesEdicion: () => import("@/components/ControlesEdicion")
   },
   computed: {
     estiloFondo(){
@@ -59,20 +50,11 @@ export default {
     ...mapState(['sociosFiltrados','actual'])
   },
   methods: {
-    recargar(){
-      let clone = cloneDeep(this.sociosFiltrados[this.actual-1])
-      this.$store.commit("setSocioEditado", clone)
-    },
-    editar(){
-      //Llamar a servicio editar.
-      //Volver a fetchear los socios.
-      alert("editado")
-    }
+    ...mapActions(["restablecerEdicion"])
   },
   mounted(){
-    //inicializar socioEditado
-    this.recargar()
-  }
-    
+    //inicializar socioEditado 
+    this.restablecerEdicion();   
+  }    
 }
 </script>

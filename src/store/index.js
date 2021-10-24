@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import socioService from "@/services/socio.service";
+var cloneDeep = require('lodash.clonedeep');
 
 Vue.use(Vuex)
 
@@ -264,6 +265,17 @@ export default new Vuex.Store({
         commit('setSocios',response.data)
         commit('setSociosFiltrados',state.socios)
       }); 
+    },
+    restablecerEdicion({commit, state}){
+      let clone = cloneDeep(state.sociosFiltrados[state.actual-1])
+      commit("setSocioEditado", clone)
+    },
+    editarSocio({dispatch, commit, state}){
+      //Llamar a servicio editar.
+      console.log("editar")
+      //Volver al principio o algo asi, volver a fetchear podria ser por el mismo id
+      dispatch('fetchSocioPorId',state.sociosFiltrados[state.actual-1].nro_registro)
+      commit('resetActual')  
     }
   },
   modules: {
