@@ -20,6 +20,12 @@
                 <v-btn block @click="anteriorIngreso" :disabled="ingresosSeleccionados.length<=1"> Ant. </v-btn>
             </v-col>
         </v-row>
+        
+        <v-row>
+            <v-col>
+                <v-btn block @click="siguienteIngreso" :disabled="ingresosSeleccionados.length<=1"> CS </v-btn>
+            </v-col>
+        </v-row>
     </v-container>
     </v-sheet>    
 </template>

@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import ingresoService from '@/services/ingreso.service'
 import { mapState } from 'vuex'
 export default {
     data(){
@@ -28,7 +27,7 @@ export default {
             {text: 'Nro CI', value: 'ingresoId'},
             {text: 'Titulo', value: 'ingTitulo'},
             {text: 'Fecha',  value: 'ingFecha'},
-            {text: 'Total',  value: 'total'}
+            {text: 'Total',  value: 'totalDebe'}
         ]
       }
     },
@@ -42,25 +41,6 @@ export default {
             }
         },
         ...mapState(["ingresosMes"])
-    },
-    methods:{
-        fetchIngresos(){
-            ingresoService.getAllByMes(1).then((response)=>{
-                const reducer = (pv, cv) => pv.debe + cv.debe
-                for(let ingreso of response.data){
-                    if(ingreso.detalleCuentas.length > 1){
-                        ingreso.total = ingreso.detalleCuentas.reduce(reducer)
-                    }
-                    else{
-                        ingreso.total = ingreso.detalleCuentas[0].debe
-                    }
-                }
-                this.$store.commit('setIngresosMes', response.data)
-            })
-        }
-    },
-    mounted(){
-        this.fetchIngresos()
     }
 }
 </script>

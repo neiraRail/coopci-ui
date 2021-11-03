@@ -210,6 +210,9 @@ export default new Vuex.Store({
     setIngresosSeleccionados(state, value){
       state.ingresosSeleccionados = value
     },
+    resetIngresosSeleccionados(state){
+      state.ingresosSeleccionados = []
+    },
     setIngresoActual(state, value){
       state.ingresoActual = value
     }

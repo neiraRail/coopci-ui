@@ -41,7 +41,8 @@ export default {
             this.$router.push("Detalleingreso")
         },
         volver(){
-            this.$store.commit("setIngresosSeleccionados", [])
+            this.$store.commit("setIngresoActual",1)
+            this.$store.commit("resetIngresosSeleccionados")
             this.$router.push("Ingresos")
         }
     }
