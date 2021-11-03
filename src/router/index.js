@@ -27,6 +27,13 @@ const routes = [
     component: function () {
       return import('../views/Editor.vue')
     }
+  },
+  {
+    path: '/ingresos',
+    name: 'Ingresos',
+    component: function() {
+      return import('../views/Ingresos.vue')
+    }
   }
   
 ]
