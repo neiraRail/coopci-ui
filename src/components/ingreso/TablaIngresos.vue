@@ -1,12 +1,11 @@
 <template>
     <v-sheet 
-        min-height="160" 
-        class="panel-filtros"
+        min-height="160"
         rounded="lg">
         <v-data-table
             v-model="selected"
             :headers="headers"
-            :items="ingresos"
+            :items="ingresosMes"
             item-key="ingresoId"
             :items-per-page="5"
             class="elevation-1"
@@ -21,6 +20,7 @@
 
 <script>
 import ingresoService from '@/services/ingreso.service'
+import { mapState } from 'vuex'
 export default {
     data(){
       return {
@@ -29,26 +29,33 @@ export default {
             {text: 'Titulo', value: 'ingTitulo'},
             {text: 'Fecha',  value: 'ingFecha'},
             {text: 'Total',  value: 'total'}
-        ],
-        ingresos: [],
-        selected: []
+        ]
       }
+    },
+    computed:{
+        selected: {
+            get(){
+                return this.$store.state.ingresosSeleccionados
+            },
+            set(value){
+                this.$store.commit('setIngresosSeleccionados', value)
+            }
+        },
+        ...mapState(["ingresosMes"])
     },
     methods:{
         fetchIngresos(){
             ingresoService.getAllByMes(1).then((response)=>{
-                this.ingresos = response.data
                 const reducer = (pv, cv) => pv.debe + cv.debe
-                for(let ingreso of this.ingresos){
+                for(let ingreso of response.data){
                     if(ingreso.detalleCuentas.length > 1){
                         ingreso.total = ingreso.detalleCuentas.reduce(reducer)
                     }
                     else{
                         ingreso.total = ingreso.detalleCuentas[0].debe
-                    }                    
-                    console.log(ingreso.total)
-                }                
-
+                    }
+                }
+                this.$store.commit('setIngresosMes', response.data)
             })
         }
     },

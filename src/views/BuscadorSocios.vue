@@ -17,7 +17,7 @@
             md="8"
             order-sm="12"
           >
-            <ResultadoBuscador ref="ResultadoBuscador" :socio="sociosFiltrados[actual-1]" />
+            <ResultadoBuscador ref="ResultadoBuscador" :socio="sociosFiltrados[socioActual-1]" />
           </v-col>
 
           <v-col
@@ -50,13 +50,13 @@ export default {
       },    
     },
     computed: {        
-      ...mapState(['actual','socios','sociosFiltrados'])        
+      ...mapState(['socioActual','socios','sociosFiltrados'])        
     },
     components: {
-      ResultadoBuscador:() => import("@/components/ResultadoBuscador"),
-      Navegador:() => import("@/components/Navegador"),
-      Filtro:() => import("@/components/Filtro"), 
-      PanelBusqueda: () => import('@/components/PanelBusqueda')     
+      ResultadoBuscador:() => import("@/components/socio/ResultadoBuscador"),
+      Navegador:() => import("@/components/socio/Navegador"),
+      Filtro:() => import("@/components/socio/Filtro"), 
+      PanelBusqueda: () => import('@/components/socio/PanelBusqueda')     
     }
 }
 </script>

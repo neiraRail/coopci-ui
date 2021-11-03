@@ -40,14 +40,14 @@ export default {
     }
   },
   components: {
-    CamposEdicion: () => import("@/components/CamposEdicion"),
-    ControlesEdicion: () => import("@/components/ControlesEdicion")
+    CamposEdicion: () => import("@/components/socio/CamposEdicion"),
+    ControlesEdicion: () => import("@/components/socio/ControlesEdicion")
   },
   computed: {
     estiloFondo(){
       return this.modoEditar ? 'grey lighten-1' : 'grey lighten-3'
     },
-    ...mapState(['sociosFiltrados','actual'])
+    ...mapState(['sociosFiltrados','socioActual'])
   },
   methods: {
     ...mapActions(["restablecerEdicion"])

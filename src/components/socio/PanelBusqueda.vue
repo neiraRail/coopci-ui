@@ -76,7 +76,7 @@ export default {
             //Validar el formulario
             if (this.$refs.formulario.validate()){
             //Resetear el número actual
-            this.$store.commit('resetActual')
+            this.$store.commit('resetSocioActual')
             //Si se buscó por el nro de socio
             if((this.cb_nombre === null || this.cb_nombre ==='') && (this.cb_apellido === null || this.cb_apellido === '')){
                 this.fetchSocioPorId(this.cb_nroSocio);

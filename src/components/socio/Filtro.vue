@@ -104,7 +104,7 @@ export default {
     watch: {
         filtro_valor(val){
             //Reset actual
-            this.$store.commit('resetActual')
+            this.$store.commit('resetSocioActual')
             //Filtrar si los combobox no están vacios
             if(this.filtro_columna && val.length>0){  
                 let filtrados = []

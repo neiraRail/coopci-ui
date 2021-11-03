@@ -1,13 +1,13 @@
 <template>
     <v-sheet
-    rounded="lg"
-    min-height="170"
+        rounded="lg"
+        min-height="170"
     >
     <!-- Botones de accion -->
     <v-container>
         <v-row >
             <v-col align="center">
-                {{actual}}/{{sociosFiltrados.length}}
+                {{socioActual}}/{{sociosFiltrados.length}}
             </v-col>  
         </v-row>
         <v-row>
@@ -29,27 +29,27 @@ import {mapState} from 'vuex'
 
 export default {
     computed: {
-        ...mapState(['actual','sociosFiltrados'])
+        ...mapState(['socioActual','sociosFiltrados'])
     },
     methods: {
         siguienteResultado(){
             //Aumentar uno a menos que se llegue al máximo
-            if(this.actual<this.sociosFiltrados.length){
-                this.$store.commit('setActual', this.actual+1)
+            if(this.socioActual<this.sociosFiltrados.length){
+                this.$store.commit('setSocioActual', this.socioActual+1)
             }
             else{
-                this.$store.commit('resetActual')
+                this.$store.commit('resetSocioActual')
             }
             //Cerrar los paneles
             this.$store.commit('cerrarPaneles')     
         },
         anteriorResultado(){
             //Disminuir uno a menos que se llegue a 1
-            if(this.actual>1){
-                this.$store.commit('setActual',this.actual - 1)
+            if(this.socioActual>1){
+                this.$store.commit('setSocioActual',this.socioActual - 1)
             }
             else{
-                this.$store('setActual', this.socios.length)
+                this.$store.commit('setSocioActual', this.sociosFiltrados.length)
             }
             //Cerrar paneles
             this.$store.commit('cerrarPaneles') 

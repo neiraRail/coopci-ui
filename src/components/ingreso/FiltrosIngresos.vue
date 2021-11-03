@@ -1,7 +1,6 @@
 <template>
   <v-sheet 
-    min-height="160" 
-    class="panel-filtros"
+    min-height="160"
     rounded="lg"
   >
     

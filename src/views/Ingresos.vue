@@ -7,7 +7,7 @@
           sm="6"
           md="2"
         >
-          <PanelFiltrosIngreso/>
+          <AccionIngresos/>
         </v-col>
         <v-col
           cols="12"
@@ -23,7 +23,7 @@
           md="2"
           order-md="last"
         >
-          <PanelAccionIngreso/>
+          <FiltrosIngresos/>
         </v-col>
       </v-row>
     </v-container>
@@ -33,8 +33,8 @@
 export default {
     components: {
       TablaIngresos: () => import("@/components/ingreso/TablaIngresos"),
-      PanelFiltrosIngreso: () => import("@/components/ingreso/PanelFiltrosIngreso"),
-      PanelAccionIngreso: () => import("@/components/ingreso/PanelAccionIngreso")
+      FiltrosIngresos: () => import("@/components/ingreso/FiltrosIngresos"),
+      AccionIngresos: () => import("@/components/ingreso/AccionIngresos")
     }
 }
 </script>

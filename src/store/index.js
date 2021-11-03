@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    actual: 1,
+    socioActual: 1,
     paneles: [],
     socios: [{
       nro_registro: '',
@@ -176,14 +176,18 @@ export default new Vuex.Store({
           correo: "",
           prioridad: ''
       }]
-    }
+    },
+    ingresosMes: [],
+    ingresosSeleccionados: [],
+    ingresoEditado: {},
+    ingresoActual: 1
   },
   mutations: {
-    setActual(state,act){
-      state.actual = act
+    setSocioActual(state,act){
+      state.socioActual = act
     },
-    resetActual(state){
-      state.actual = 1 
+    resetSocioActual(state){
+      state.socioActual = 1 
     },
     setPaneles(state, value){
       state.paneles = value
@@ -199,6 +203,15 @@ export default new Vuex.Store({
     },
     setSociosFiltrados(state, value){
       state.sociosFiltrados = value
+    },
+    setIngresosMes(state, value){
+      state.ingresosMes = value
+    },
+    setIngresosSeleccionados(state, value){
+      state.ingresosSeleccionados = value
+    },
+    setIngresoActual(state, value){
+      state.ingresoActual = value
     }
   },
   actions: {
@@ -267,15 +280,15 @@ export default new Vuex.Store({
       }); 
     },
     restablecerEdicion({commit, state}){
-      let clone = cloneDeep(state.sociosFiltrados[state.actual-1])
+      let clone = cloneDeep(state.sociosFiltrados[state.socioActual-1])
       commit("setSocioEditado", clone)
     },
     editarSocio({dispatch, commit, state}){
       //Llamar a servicio editar.
       console.log("editar")
       //Volver al principio o algo asi, volver a fetchear podria ser por el mismo id
-      dispatch('fetchSocioPorId',state.sociosFiltrados[state.actual-1].nro_registro)
-      commit('resetActual')  
+      dispatch('fetchSocioPorId',state.sociosFiltrados[state.socioActual-1].nro_registro)
+      commit('resetSocioActual')  
     }
   },
   modules: {
