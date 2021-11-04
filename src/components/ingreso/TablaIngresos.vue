@@ -13,6 +13,7 @@
                 disableItemsPerPage: true
             }"
             show-select
+            no-data-text="No hay comprobantes este mes"
         >
         </v-data-table>
     </v-sheet>    

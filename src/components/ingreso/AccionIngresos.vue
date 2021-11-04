@@ -5,7 +5,7 @@
         <v-container>
             <v-row>
                 <v-col>
-                    <v-btn block> Crear </v-btn>
+                    <v-btn block color="#70C1B3"> Crear </v-btn>
                 </v-col>
             </v-row>
             <v-row>

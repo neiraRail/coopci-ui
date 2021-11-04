@@ -1,8 +1,8 @@
 import ApiService from "@/services/api.service";
 const url = "ingreso";
 export const service = {
-    getAllByMes(mes) {
-        return ApiService.get(url+'/mes', { slug: mes });
+    getAllByMes(mes, año) {
+        return ApiService.get(url+'/mes', { slug: mes+'/'+año });
     },
     get(id) {
         return ApiService.get(url, { slug: id });

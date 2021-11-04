@@ -33,39 +33,39 @@ export default {
     data(){
         return{
             headerCredito: [
-                {text: 'Folio', value: 'credito.creditoId'},
-                {text: 'Nro Cuota', value: 'nroCuota'},
-                {text: 'Interés', value: 'interes'},
-                {text: 'Amortizacion', value: 'amortizacion'}
+                {text: 'Folio', value: 'credito.creditoId', class: 'accent'},
+                {text: 'Nro Cuota', value: 'nroCuota', class: 'accent'},
+                {text: 'Interés', value: 'interes', class: 'accent'},
+                {text: 'Amortizacion', value: 'amortizacion', class: 'accent'}
             ],
             headerSocio: [
-                {text: 'Numero', value: 'socioEntidad.nro_registro'},
-                {text: 'Nombre', value: 'socioEntidad.nombre1'},
-                {text: 'Capital Pagado', value: 'capitalPagado'},
-                {text: 'Fondo Solidario', value: 'fondoSolidario'},
-                {text: 'Otros Ingresos', value: 'cuotaSocial'},
-                {text: 'Nro cuotas', value: 'nroCuotas'},
+                {text: 'Numero', value: 'socioEntidad.nro_registro', class: 'accent'},
+                {text: 'Nombre', value: 'socioEntidad.nombre1', class: 'accent'},
+                {text: 'Capital Pagado', value: 'capitalPagado', class: 'accent'},
+                {text: 'Fondo Solidario', value: 'fondoSolidario', class: 'accent'},
+                {text: 'Otros Ingresos', value: 'cuotaSocial', class: 'accent'},
+                {text: 'Nro cuotas', value: 'nroCuotas', class: 'accent'},
             ]
         }
     },
     computed:{
         ...mapState(['ingresosSeleccionados', 'ingresoActual']),
         ingreso(){
-            if(this.$store.state.ingresosSeleccionados.length>=1){
+            if(this.ingresosSeleccionados.length>=1){
                 return this.ingresosSeleccionados[this.ingresoActual-1]
             }
             else{
-                return [{
-                    "ingresoId": '',
-                    "ingTitulo": '',
-                    "ingRut": '',
-                    "ingLugar": '',
-                    "ingFecha": '',
-                    "ingGlosa": '',
-                    "cuotaSocios": [],
-                    "cuotaCreditos": [],
-                    "detalleCuentas": []
-                }]
+                return {
+                    ingresoId: '',
+                    ingTitulo: '',
+                    ingRut: '',
+                    ingLugar: '',
+                    ingFecha: '',
+                    ingGlosa: '',
+                    cuotaSocios: [],
+                    cuotaCreditos: [],
+                    detalleCuentas: []
+                }
             }            
         }
     }    

@@ -40,7 +40,9 @@ export default {
     },
     methods:{
       fetchIngresos(){
-        ingresoService.getAllByMes(1).then((response)=>{
+        const mesActual = new Date().getMonth()
+        const añoActual = new Date().getFullYear()
+        ingresoService.getAllByMes(mesActual,añoActual).then((response)=>{
           const reducerDebe = (pv, cv) => pv.debe + cv.debe
           const reducerHaber = (pv, cv) => pv.haber + cv.haber
           for(let ingreso of response.data){
