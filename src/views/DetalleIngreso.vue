@@ -27,6 +27,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <TablasCuotasIngreso/>
     </v-sheet>      
 </template>
 
@@ -39,7 +40,8 @@ export default {
     components:{
         VerIngreso: ()=> import('@/components/ingreso/VerIngreso'),
         NavegadorIngresos: ()=> import('@/components/ingreso/NavegadorIngresos'),
-        AccionIngresos: ()=> import('@/components/ingreso/AccionIngresos')
+        AccionIngresos: ()=> import('@/components/ingreso/AccionIngresos'),
+        TablasCuotasIngreso: ()=> import('@/components/ingreso/TablasCuotasIngreso')
     }
 }
 </script>

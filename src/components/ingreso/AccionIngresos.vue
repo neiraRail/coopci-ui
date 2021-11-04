@@ -38,6 +38,7 @@ export default {
     },
     methods:{
         ver(){
+            this.$store.commit("setIngresoActual",1)
             this.$router.push("Detalleingreso")
         },
         volver(){
