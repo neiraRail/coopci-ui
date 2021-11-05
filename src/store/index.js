@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import socioService from "@/services/socio.service";
+import ingresoService from "@/services/ingreso.service";
 var cloneDeep = require('lodash.clonedeep');
 
 Vue.use(Vuex)
@@ -292,6 +293,23 @@ export default new Vuex.Store({
       //Volver al principio o algo asi, volver a fetchear podria ser por el mismo id
       dispatch('fetchSocioPorId',state.sociosFiltrados[state.socioActual-1].nro_registro)
       commit('resetSocioActual')  
+    },
+    fetchIngresosPorMes({commit}, {mes, año}){
+      ingresoService.getAllByMes(mes, año).then((response)=>{
+        const reducerDebe = (pv, cv) => pv.debe + cv.debe
+        const reducerHaber = (pv, cv) => pv.haber + cv.haber
+        for(let ingreso of response.data){
+          if(ingreso.detalleCuentas.length > 1){
+            ingreso.totalDebe = ingreso.detalleCuentas.reduce(reducerDebe)
+            ingreso.totalHaber = ingreso.detalleCuentas.reduce(reducerHaber)
+          }
+          else{
+            ingreso.totalDebe = ingreso.detalleCuentas[0].debe
+            ingreso.totalHaber = ingreso.detalleCuentas[0].haber
+          }
+        }
+        commit('setIngresosMes', response.data)
+      })
     }
   },
   modules: {

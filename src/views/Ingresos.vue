@@ -31,7 +31,7 @@
 </template>
 <script>
 
-import ingresoService from '@/services/ingreso.service'
+import { mapActions } from 'vuex'
 export default {
     components: {
       TablaIngresos: () => import("@/components/ingreso/TablaIngresos"),
@@ -39,24 +39,12 @@ export default {
       AccionIngresos: () => import("@/components/ingreso/AccionIngresos")
     },
     methods:{
+      ...mapActions(["fetchIngresosPorMes"]),
       fetchIngresos(){
         const mesActual = new Date().getMonth()
         const añoActual = new Date().getFullYear()
-        ingresoService.getAllByMes(mesActual,añoActual).then((response)=>{
-          const reducerDebe = (pv, cv) => pv.debe + cv.debe
-          const reducerHaber = (pv, cv) => pv.haber + cv.haber
-          for(let ingreso of response.data){
-            if(ingreso.detalleCuentas.length > 1){
-              ingreso.totalDebe = ingreso.detalleCuentas.reduce(reducerDebe)
-              ingreso.totalHaber = ingreso.detalleCuentas.reduce(reducerHaber)
-            }
-            else{
-              ingreso.totalDebe = ingreso.detalleCuentas[0].debe
-              ingreso.totalHaber = ingreso.detalleCuentas[0].haber
-            }
-          }
-          this.$store.commit('setIngresosMes', response.data)
-        })
+        console.log(añoActual)
+        this.fetchIngresosPorMes({mes: mesActual, año: añoActual})
       }
     },
     mounted(){
