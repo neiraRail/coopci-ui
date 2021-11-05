@@ -15,7 +15,7 @@
           md="8"
           order-sm="12"
         >
-           <VerIngreso/>   
+           <FormIngreso/>   
         </v-col>
         <v-col
           cols="12"
@@ -38,7 +38,7 @@ export default {
     ...mapState(['ingresoActual', 'ingresosSeleccionados'])
   },
     components:{
-        VerIngreso: ()=> import('@/components/ingreso/VerIngreso'),
+        FormIngreso: ()=> import('@/components/ingreso/FormIngreso'),
         NavegadorIngresos: ()=> import('@/components/ingreso/NavegadorIngresos'),
         AccionIngresos: ()=> import('@/components/ingreso/AccionIngresos'),
         TablasCuotasIngreso: ()=> import('@/components/ingreso/TablasCuotasIngreso')

@@ -32,6 +32,13 @@ const routes = [
       return import('../views/DetalleIngreso.vue')
     }
   },
+  {
+    path: '/editoringreso',
+    name: "EditorIngreso",
+    component: function() {
+      return import('../views/EditorIngreso')
+    }
+  }
   
 ]
 

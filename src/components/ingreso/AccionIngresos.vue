@@ -5,7 +5,7 @@
         <v-container>
             <v-row>
                 <v-col>
-                    <v-btn block color="#70C1B3"> Crear </v-btn>
+                    <v-btn block color="#70C1B3" @click="crear"> Crear </v-btn>
                 </v-col>
             </v-row>
             <v-row>
@@ -45,6 +45,9 @@ export default {
             this.$store.commit("setIngresoActual",1)
             this.$store.commit("resetIngresosSeleccionados")
             this.$router.push("Ingresos")
+        },
+        crear(){
+            this.$router.push("EditorIngreso")
         }
     }
 }
