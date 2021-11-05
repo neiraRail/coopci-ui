@@ -15,6 +15,9 @@ export const service = {
     },
     getSexos() {
         return ApiService.get(url+"/sexo", {id: ""});
+    },
+    getCuentas() {
+        return ApiService.get(url+"/cuenta", {id: ""});
     }
 };
 export default service;

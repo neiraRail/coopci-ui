@@ -60,7 +60,7 @@
                     <v-combobox
                         v-model="cuenta.cuenta"
                         :items="cuentas"
-                        item-text="cuentaNombre"
+                        item-text="cuentaId"                        
                         dense
                     ></v-combobox>
                 </v-col>
@@ -82,13 +82,16 @@
                 <v-col md="2" class="ingCol left field">
                     <v-btn block @click="agregarCuenta">+</v-btn>
                 </v-col>
-                <v-col md="10"></v-col>
+                <v-col md="1" class="field ingCol left">
+                    <v-btn block @click="quitarCuenta">-</v-btn>
+                </v-col>
+                <v-col md="9"></v-col>
             </v-row>
             <v-row class="full">
                 <v-col md="2" class="ingCol left"><b>Total</b></v-col>
                 <v-col md="6"></v-col>
-                <v-col md="2" class="ingCol"><b>{{ingreso.totalDebe}} </b></v-col>
-                <v-col md="2"><b>{{ingreso.totalHaber}} </b></v-col>
+                <v-col md="2" class="ingCol"><b>{{totalDebe}} </b></v-col>
+                <v-col md="2"><b>{{totalHaber}} </b></v-col>
             </v-row>
             <v-row class="full">
                 <v-col md="2" class="ingCol left"><b>Glosa </b></v-col>
@@ -104,6 +107,7 @@
 </template>
 
 <script>
+import enumsService from '@/services/enums.service'
 export default {
     data(){
         return{
@@ -116,22 +120,71 @@ export default {
                     ingGlosa: '',
                     cuotaSocios: [],
                     cuotaCreditos: [],
-                    detalleCuentas: []
+                    detalleCuentas: [{
+                        cuenta: {
+                            cuentaId: '',
+                            cuentaNombre: ''
+                        },
+                        debe: 0,
+                        haber: 0
+                    }]
             },
             cuentas:[]
+        }
+    },
+    computed:{
+        totalDebe(){
+            if(this.ingreso.detalleCuentas.length > 1){
+                let suma = 0
+                for(let ct of this.ingreso.detalleCuentas){
+                    console.log(1+1)
+                    suma= parseInt(suma) + (ct.debe ? parseInt(ct.debe):0)                                        
+                }
+                return suma
+            }else if(this.ingreso.detalleCuentas.length == 1){
+                return this.ingreso.detalleCuentas[0].debe
+            }else{
+                return 0
+            }
+        },
+        totalHaber(){ 
+            if(this.ingreso.detalleCuentas.length > 1){
+                let suma = 0
+                for(let ct of this.ingreso.detalleCuentas){
+                    console.log(1+1)
+                    suma= parseInt(suma) + (ct.haber ? parseInt(ct.haber):0)                                        
+                }
+                return suma
+            }else if(this.ingreso.detalleCuentas.length == 1){
+                return this.ingreso.detalleCuentas[0].haber
+            }else{
+                return 0
+            }
         }
     },
     methods:{
         agregarCuenta(){
             this.ingreso.detalleCuentas.push({
-                "cuenta": {
-                    "cuentaId": '',
-                    "cuentaNombre": ''
+                cuenta: {
+                    cuentaId: '',
+                    cuentaNombre: ''
                 },
-                "debe": '',
-                "haber": ''
+                debe: 0,
+                haber: 0
+            })
+        },
+        quitarCuenta(){
+            this.ingreso.detalleCuentas.pop()
+        },
+
+        fetchCuentas(){
+            enumsService.getCuentas().then((response)=>{
+                this.cuentas = response.data
             })
         }
+    },
+    mounted(){
+        this.fetchCuentas()
     }
     
 }
