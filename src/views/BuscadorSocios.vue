@@ -50,7 +50,7 @@ export default {
       },    
     },
     computed: {        
-      ...mapState(['socioActual','socios','sociosFiltrados'])        
+      ...mapState('socios',['socioActual','socios','sociosFiltrados'])        
     },
     components: {
       ResultadoBuscador:() => import("@/components/socio/ResultadoBuscador"),

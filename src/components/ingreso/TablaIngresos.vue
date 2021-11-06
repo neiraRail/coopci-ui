@@ -35,13 +35,13 @@ export default {
     computed:{
         selected: {
             get(){
-                return this.$store.state.ingresosSeleccionados
+                return this.$store.state.ingresos.ingresosSeleccionados
             },
             set(value){
-                this.$store.commit('setIngresosSeleccionados', value)
+                this.$store.commit('ingresos/setIngresosSeleccionados', value)
             }
         },
-        ...mapState(["ingresosMes"])
+        ...mapState('ingresos', ["ingresosMes"])
     }
 }
 </script>

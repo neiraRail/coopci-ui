@@ -87,7 +87,7 @@ export default {
         if(this.filtro_mes)
           this.fetchIngresosPorMes({mes: this.filtro_mes.nro, año:this.filtro_año})
       },
-      ...mapActions(["fetchIngresosPorMes"])
+      ...mapActions('ingresos', ["fetchIngresosPorMes"])
     },
     mounted(){
       const añoActual = new Date().getFullYear()

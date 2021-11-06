@@ -22,7 +22,7 @@ export default {
         this.editarSocio()
         this.$router.push("/Buscador")
       },
-      ...mapActions(['restablecerEdicion', 'editarSocio'])
+      ...mapActions('socios', ['restablecerEdicion', 'editarSocio'])
     }
 }
 </script>

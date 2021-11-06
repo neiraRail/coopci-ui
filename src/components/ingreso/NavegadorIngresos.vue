@@ -29,25 +29,25 @@ import { mapState } from 'vuex'
 
 export default {
     computed:{
-        ...mapState(["ingresoActual","ingresosSeleccionados"]),
+        ...mapState('ingresos', ["ingresoActual","ingresosSeleccionados"]),
     },
     methods:{
         siguienteIngreso(){
             //Aumentar uno a menos que se llegue al máximo
             if(this.ingresoActual<this.ingresosSeleccionados.length){
-                this.$store.commit('setIngresoActual', this.ingresoActual+1)
+                this.$store.commit('ingresos/setIngresoActual', this.ingresoActual+1)
             }
             else{
-                this.$store.commit('setIngresoActual', 1)
+                this.$store.commit('ingresos/setIngresoActual', 1)
             }
         },
         anteriorIngreso(){
             //Disminuir uno a menos que se llegue a 1
             if(this.ingresoActual>1){
-                this.$store.commit('setIngresoActual',this.ingresoActual - 1)
+                this.$store.commit('ingresos/setIngresoActual',this.ingresoActual - 1)
             }
             else{
-                this.$store.commit('setIngresoActual', this.ingresosSeleccionados.length)
+                this.$store.commit('ingresos/setIngresoActual', this.ingresosSeleccionados.length)
             }
         },
     }

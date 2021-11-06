@@ -263,7 +263,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['cerrarPaneles'])
+        ...mapMutations('socios', ['cerrarPaneles'])
     },
     computed:{
       correosOrd(){
@@ -277,10 +277,10 @@ export default {
       },
       paneles: {
         get(){
-          return this.$store.state.paneles
+          return this.$store.state.socios.paneles
         },
         set(value){
-          this.$store.commit('setPaneles',value)
+          this.$store.commit('socios/setPaneles',value)
         }
       }
       

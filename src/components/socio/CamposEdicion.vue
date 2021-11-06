@@ -273,7 +273,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['socioEditado'])
+    ...mapState('socios',['socioEditado'])
   },
   mounted(){
     this.fetchComunas()

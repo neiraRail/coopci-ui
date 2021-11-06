@@ -29,30 +29,30 @@ import {mapState} from 'vuex'
 
 export default {
     computed: {
-        ...mapState(['socioActual','sociosFiltrados'])
+        ...mapState('socios', ['socioActual','sociosFiltrados'])
     },
     methods: {
         siguienteResultado(){
             //Aumentar uno a menos que se llegue al máximo
             if(this.socioActual<this.sociosFiltrados.length){
-                this.$store.commit('setSocioActual', this.socioActual+1)
+                this.$store.commit('socios/setSocioActual', this.socioActual+1)
             }
             else{
-                this.$store.commit('resetSocioActual')
+                this.$store.commit('socios/resetSocioActual')
             }
             //Cerrar los paneles
-            this.$store.commit('cerrarPaneles')     
+            this.$store.commit('socios/cerrarPaneles')     
         },
         anteriorResultado(){
             //Disminuir uno a menos que se llegue a 1
             if(this.socioActual>1){
-                this.$store.commit('setSocioActual',this.socioActual - 1)
+                this.$store.commit('socios/setSocioActual',this.socioActual - 1)
             }
             else{
-                this.$store.commit('setSocioActual', this.sociosFiltrados.length)
+                this.$store.commit('socios/setSocioActual', this.sociosFiltrados.length)
             }
             //Cerrar paneles
-            this.$store.commit('cerrarPaneles') 
+            this.$store.commit('socios/cerrarPaneles') 
         },
     }
 }

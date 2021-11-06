@@ -49,7 +49,7 @@ export default {
         }
     },
     computed:{
-        ...mapState(['ingresosSeleccionados', 'ingresoActual']),
+        ...mapState('ingresos', ['ingresosSeleccionados', 'ingresoActual']),
         ingreso(){
             if(this.ingresosSeleccionados.length>=1){
                 return this.ingresosSeleccionados[this.ingresoActual-1]

@@ -35,7 +35,7 @@
 import { mapState } from 'vuex'
 export default {
   computed:{
-    ...mapState(['ingresoActual', 'ingresosSeleccionados'])
+    ...mapState('ingresos', ['ingresoActual', 'ingresosSeleccionados'])
   },
     components:{
         VerIngreso: ()=> import('@/components/ingreso/VerIngreso'),

@@ -28,22 +28,22 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-    data(){
+    data(){ 
         return{
         }
     },
     computed:{
-        ...mapState(["ingresosSeleccionados"])
+        ...mapState('ingresos', ["ingresosSeleccionados"])
         
     },
     methods:{
         ver(){
-            this.$store.commit("setIngresoActual",1)
+            this.$store.commit("ingresos/setIngresoActual",1)
             this.$router.push("Detalleingreso")
         },
         volver(){
-            this.$store.commit("setIngresoActual",1)
-            this.$store.commit("resetIngresosSeleccionados")
+            this.$store.commit("ingresos/setIngresoActual",1)
+            this.$store.commit("ingresos/resetIngresosSeleccionados")
             this.$router.push("Ingresos")
         },
         crear(){

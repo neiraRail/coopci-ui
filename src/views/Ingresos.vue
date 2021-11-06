@@ -39,7 +39,7 @@ export default {
       AccionIngresos: () => import("@/components/ingreso/AccionIngresos")
     },
     methods:{
-      ...mapActions(["fetchIngresosPorMes"]),
+      ...mapActions('ingresos', ["fetchIngresosPorMes"]),
       fetchIngresos(){
         const mesActual = new Date().getMonth()
         const añoActual = new Date().getFullYear()
@@ -48,7 +48,7 @@ export default {
       }
     },
     mounted(){
-      this.$store.commit('resetIngresosSeleccionados')
+      this.$store.commit('ingresos/resetIngresosSeleccionados')
       this.fetchIngresos()
     }
 }

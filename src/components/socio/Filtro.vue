@@ -104,7 +104,7 @@ export default {
     watch: {
         filtro_valor(val){
             //Reset actual
-            this.$store.commit('resetSocioActual')
+            this.$store.commit('socios/resetSocioActual')
             //Filtrar si los combobox no están vacios
             if(this.filtro_columna && val.length>0){  
                 let filtrados = []
@@ -119,11 +119,11 @@ export default {
                         return socio == opcion.valor
                     }))                    
                 }
-                this.$store.commit('setSociosFiltrados', filtrados)
+                this.$store.commit('socios/setSociosFiltrados', filtrados)
                 
             }else{
                 //Esto puede ser un clear, o deseleccionar todo.
-                this.$store.commit('setSociosFiltrados', this.socios)
+                this.$store.commit('socios/setSociosFiltrados', this.socios)
             }
         },
     },
@@ -177,7 +177,7 @@ export default {
             }
             return posibles
         },
-        ...mapState(['socios','sociosFiltrados'])
+        ...mapState('socios', ['socios','sociosFiltrados'])
         
     }
     

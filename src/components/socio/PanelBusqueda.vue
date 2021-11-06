@@ -76,7 +76,7 @@ export default {
             //Validar el formulario
             if (this.$refs.formulario.validate()){
             //Resetear el número actual
-            this.$store.commit('resetSocioActual')
+            this.$store.commit('socios/resetSocioActual')
             //Si se buscó por el nro de socio
             if((this.cb_nombre === null || this.cb_nombre ==='') && (this.cb_apellido === null || this.cb_apellido === '')){
                 this.fetchSocioPorId(this.cb_nroSocio);
@@ -95,11 +95,11 @@ export default {
             console.log("error in validation")
             }
             //Cerrar los paneles
-            this.$store.commit('cerrarPaneles')
+            this.$store.commit('socios/cerrarPaneles')
             //Evento para limpiar filtros  
             this.$emit('fetch')           
         }, 
-        ...mapActions(['fetchSocioPorId','fetchSociosPorApellido','fetchSociosPorNombre']) 
+        ...mapActions('socios', ['fetchSocioPorId','fetchSociosPorApellido','fetchSociosPorNombre']) 
     }
     
 }

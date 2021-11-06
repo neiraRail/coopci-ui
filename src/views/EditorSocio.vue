@@ -47,10 +47,10 @@ export default {
     estiloFondo(){
       return this.modoEditar ? 'grey lighten-1' : 'grey lighten-3'
     },
-    ...mapState(['sociosFiltrados','socioActual'])
+    ...mapState('socios', ['sociosFiltrados','socioActual'])
   },
   methods: {
-    ...mapActions(["restablecerEdicion"])
+    ...mapActions('socios', ["restablecerEdicion"])
   },
   mounted(){
     //inicializar socioEditado 

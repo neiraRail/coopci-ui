@@ -23,7 +23,7 @@
           md="2"
           order-md="last"
         >
-          <NavegadorIngresos/> 
+          <PresetsPanel/> 
         </v-col>
       </v-row>
     </v-container>
@@ -35,11 +35,11 @@
 import { mapState } from 'vuex'
 export default {
   computed:{
-    ...mapState(['ingresoActual', 'ingresosSeleccionados'])
+    ...mapState('ingresos', ['ingresoActual', 'ingresosSeleccionados'])
   },
     components:{
         FormIngreso: ()=> import('@/components/ingreso/FormIngreso'),
-        NavegadorIngresos: ()=> import('@/components/ingreso/NavegadorIngresos'),
+        PresetsPanel: ()=> import('@/components/ingreso/PresetsPanel'),
         AccionIngresos: ()=> import('@/components/ingreso/AccionIngresos'),
         TablasCuotasIngreso: ()=> import('@/components/ingreso/TablasCuotasIngreso')
     }

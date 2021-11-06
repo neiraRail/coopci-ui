@@ -4,12 +4,14 @@
         rounded="lg">
         <v-container>
             <v-row class="ingHeader full">
-                <v-col md="10"><center><h2>Comprobante de Ingreso</h2></center></v-col>
+                <v-col md="9"><center><h2>Comprobante de Ingreso</h2></center></v-col>
                 <v-col md="1" class="ingCol"><p>Nro</p></v-col>
-                <v-col md="1" class="field">
+                <v-col md="2" class="field">
                     <v-text-field
-                        v-model="ingreso.ingresoId"
+                        v-model="ingresoEditado.ingresoId"
                         dense
+                        type="number"
+                        :rules="[!/([\D])/.test(ingresoEditado.ingresoId)]"
                     ></v-text-field>
                 </v-col>
             </v-row>
@@ -17,15 +19,18 @@
                 <v-col md="2"  class="ingCol left">Nombre</v-col>
                 <v-col md="5" class="field">
                     <v-text-field
-                        v-model="ingreso.ingTitulo"
+                        v-model="ingresoEditado.ingTitulo"
                         dense
+                        :rules="[!/[^a-z ]/i.test(ingresoEditado.ingTitulo)]"
                     ></v-text-field>
                 </v-col>
                 <v-col md="1"  class="ingCol">Rut</v-col>
                 <v-col md="4" class="field">
                     <v-text-field
-                        v-model="ingreso.ingRut"
+                        v-model="ingresoEditado.ingRut"
                         dense
+                        clearable
+                        :rules="[/^(\d{1,3}(?:\.\d{1,3}){2}-[\dkK])$/.test(ingresoEditado.ingRut) || ingresoEditado.ingRut===null || ingresoEditado.ingRut == '']"
                     ></v-text-field>
                 </v-col>
             </v-row>  
@@ -33,14 +38,15 @@
                 <v-col md="2"  class="ingCol left">Lugar</v-col>
                 <v-col md="5" class="field">
                     <v-text-field
-                        v-model="ingreso.ingLugar"
+                        v-model="ingresoEditado.ingLugar"
                         dense
+                        :rules="[!/[^a-z ]/i.test(ingresoEditado.ingLugar)]"
                     ></v-text-field>
                 </v-col>
                 <v-col md="1"  class="ingCol">Fecha</v-col>
                 <v-col md="4" class="field">
                     <v-text-field
-                        v-model="ingreso.ingFecha"
+                        v-model="ingresoEditado.ingFecha"
                         dense
                     ></v-text-field>
                 </v-col>
@@ -55,7 +61,7 @@
                 <v-col md="2"><b>Haber</b></v-col>
             </v-row>
             <!-- Detalle de las cuentas -->
-            <v-row v-for="(cuenta, index) in ingreso.detalleCuentas" :key="index" class="full">
+            <v-row v-for="(cuenta, index) in ingresoEditado.detalleCuentas" :key="index" class="full">
                 <v-col md="2" class="ingCol left field">
                     <v-combobox
                         v-model="cuenta.cuenta"
@@ -67,14 +73,16 @@
                 <v-col md="6">{{cuenta.cuenta.cuentaNombre}} </v-col>
                 <v-col md="2" class="ingCol field">
                     <v-text-field
-                        v-model="cuenta.debe"
+                        v-model.number ="cuenta.debe"
                         dense
+                        :rules="[!/([\D])/.test(ingresoEditado.detalleCuentas[index].debe)]"
                     ></v-text-field>
                 </v-col>
                 <v-col md="2" class="field">
                     <v-text-field
-                        v-model="cuenta.haber"
+                        v-model.number ="cuenta.haber"
                         dense
+                        :rules="[!/([\D])/.test(ingresoEditado.detalleCuentas[index].haber)]"
                     ></v-text-field>
                 </v-col>
             </v-row>  
@@ -97,7 +105,7 @@
                 <v-col md="2" class="ingCol left"><b>Glosa </b></v-col>
                 <v-col md="10" class="field">
                     <v-text-field
-                        v-model="ingreso.ingGlosa"
+                        v-model="ingresoEditado.ingGlosa"
                         dense
                     ></v-text-field>
                 </v-col>
@@ -108,55 +116,49 @@
 
 <script>
 import enumsService from '@/services/enums.service'
+import ingresoService from '@/services/ingreso.service'
 export default {
     data(){
         return{
-            ingreso: {
-                    ingresoId: '',
-                    ingTitulo: '',
-                    ingRut: '',
-                    ingLugar: '',
-                    ingFecha: '',
-                    ingGlosa: '',
-                    cuotaSocios: [],
-                    cuotaCreditos: [],
-                    detalleCuentas: [{
-                        cuenta: {
-                            cuentaId: '',
-                            cuentaNombre: ''
-                        },
-                        debe: 0,
-                        haber: 0
-                    }]
+            ingresoEditado: {
+                ingresoId: '',
+                ingTitulo: '',
+                ingRut: '',
+                ingLugar: 'Temuco',
+                ingFecha: '',
+                ingGlosa: '',
+                cuotaSocios: [],
+                cuotaCreditos: [],
+                detalleCuentas: []
             },
             cuentas:[]
         }
     },
     computed:{
         totalDebe(){
-            if(this.ingreso.detalleCuentas.length > 1){
+            if(this.ingresoEditado.detalleCuentas.length > 1){
                 let suma = 0
-                for(let ct of this.ingreso.detalleCuentas){
+                for(let ct of this.ingresoEditado.detalleCuentas){
                     console.log(1+1)
                     suma= parseInt(suma) + (ct.debe ? parseInt(ct.debe):0)                                        
                 }
                 return suma
-            }else if(this.ingreso.detalleCuentas.length == 1){
-                return this.ingreso.detalleCuentas[0].debe
+            }else if(this.ingresoEditado.detalleCuentas.length == 1){
+                return this.ingresoEditado.detalleCuentas[0].debe
             }else{
                 return 0
             }
         },
         totalHaber(){ 
-            if(this.ingreso.detalleCuentas.length > 1){
+            if(this.ingresoEditado.detalleCuentas.length > 1){
                 let suma = 0
-                for(let ct of this.ingreso.detalleCuentas){
+                for(let ct of this.ingresoEditado.detalleCuentas){
                     console.log(1+1)
                     suma= parseInt(suma) + (ct.haber ? parseInt(ct.haber):0)                                        
                 }
                 return suma
-            }else if(this.ingreso.detalleCuentas.length == 1){
-                return this.ingreso.detalleCuentas[0].haber
+            }else if(this.ingresoEditado.detalleCuentas.length == 1){
+                return this.ingresoEditado.detalleCuentas[0].haber
             }else{
                 return 0
             }
@@ -164,7 +166,7 @@ export default {
     },
     methods:{
         agregarCuenta(){
-            this.ingreso.detalleCuentas.push({
+            this.ingresoEditado.detalleCuentas.push({
                 cuenta: {
                     cuentaId: '',
                     cuentaNombre: ''
@@ -174,17 +176,29 @@ export default {
             })
         },
         quitarCuenta(){
-            this.ingreso.detalleCuentas.pop()
+            this.ingresoEditado.detalleCuentas.pop()
         },
 
         fetchCuentas(){
             enumsService.getCuentas().then((response)=>{
                 this.cuentas = response.data
+                this.ingresoEditado.detalleCuentas.push({
+                    cuenta: this.cuentas[1],
+                    debe: 0,
+                    haber: 0
+                })
+            })
+        },
+
+        fetchUltimoId(){
+            ingresoService.getLastId().then((response)=>{
+                this.ingresoEditado.ingresoId = response.data + 1
             })
         }
     },
     mounted(){
-        this.fetchCuentas()
+        this.fetchCuentas()  
+        this.fetchUltimoId()      
     }
     
 }

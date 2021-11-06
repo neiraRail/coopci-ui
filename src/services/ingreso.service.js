@@ -7,6 +7,9 @@ export const service = {
     get(id) {
         return ApiService.get(url, { slug: id });
     },
+    getLastId(){
+        return ApiService.get(url+'/last', {slug: ''})
+    },
     create(params) {
         return ApiService.post(url, { params: params });
     },

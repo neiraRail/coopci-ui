@@ -6,8 +6,9 @@ var cloneDeep = require('lodash.clonedeep');
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
+const socios = {
+  namespaced: true,
+  state: () => ({
     socioActual: 1,
     paneles: [],
     socios: [{
@@ -177,12 +178,8 @@ export default new Vuex.Store({
           correo: "",
           prioridad: ''
       }]
-    },
-    ingresosMes: [],
-    ingresosSeleccionados: [],
-    ingresoEditado: {},
-    ingresoActual: 1
-  },
+    }
+  }),
   mutations: {
     setSocioActual(state,act){
       state.socioActual = act
@@ -205,18 +202,6 @@ export default new Vuex.Store({
     setSociosFiltrados(state, value){
       state.sociosFiltrados = value
     },
-    setIngresosMes(state, value){
-      state.ingresosMes = value
-    },
-    setIngresosSeleccionados(state, value){
-      state.ingresosSeleccionados = value
-    },
-    resetIngresosSeleccionados(state){
-      state.ingresosSeleccionados = []
-    },
-    setIngresoActual(state, value){
-      state.ingresoActual = value
-    }
   },
   actions: {
     fetchSocioPorId({commit, state},id){
@@ -293,7 +278,57 @@ export default new Vuex.Store({
       //Volver al principio o algo asi, volver a fetchear podria ser por el mismo id
       dispatch('fetchSocioPorId',state.sociosFiltrados[state.socioActual-1].nro_registro)
       commit('resetSocioActual')  
+    }
+  }
+}
+const ingresos = {
+  namespaced: true,
+  state: () => ({
+    ingresosMes: [],
+    ingresosSeleccionados: [],
+    ingresoEditado: {},
+    ingresoActual: 1,
+  }),
+  mutations: {
+    setIngresosMes(state, value){
+      state.ingresosMes = value
     },
+    setIngresosSeleccionados(state, value){
+      state.ingresosSeleccionados = value
+    },
+    resetIngresosSeleccionados(state){
+      state.ingresosSeleccionados = []
+    },
+    setIngresoActual(state, value){
+      state.ingresoActual = value
+    },
+    setIngresoEditado(state, value){
+      state.ingresoEditado = value
+    },
+    resetIngresoEditado(state){
+      state.ingresoEditado = {
+        ingresoId: '',
+        ingTitulo: '',
+        ingRut: '',
+        ingLugar: 'Temuco',
+        ingFecha: '',
+        ingGlosa: '',
+        cuotaSocios: [],
+        cuotaCreditos: [],
+        detalleCuentas: []
+      }
+    },
+    setIngresoEditado_ingresoId(state, value){
+      state.ingresoEditado.ingresoId = value
+    },
+    setIngresoEditado_ingTitulo(state, value){
+      state.ingresoEditado.ingTitulo = value
+    },
+    setIngresoEditado_ingRut(state, value){
+      state.ingresoEditado.ingRut = value
+    },
+  },
+  actions: {
     fetchIngresosPorMes({commit}, {mes, año}){
       ingresoService.getAllByMes(mes, año).then((response)=>{
         const reducerDebe = (pv, cv) => pv.debe + cv.debe
@@ -311,7 +346,21 @@ export default new Vuex.Store({
         commit('setIngresosMes', response.data)
       })
     }
+  }
+}
+
+export default new Vuex.Store({
+  state: {
+    
+  },
+  mutations: {
+    
+  },
+  actions: {
+    
   },
   modules: {
+    socios: socios,
+    ingresos: ingresos
   }
 })
