@@ -164,6 +164,21 @@ export default {
             }
         }
     },
+    watch:{
+        ingresoEditado: {
+            handler(val){
+                //Guardar ingresoEditado en store
+                this.$store.commit('ingresos/setIngresoEditado', val)
+            },
+            deep: true            
+        },
+        '$store.state.ingresos.ingresoEditado':{
+            handler(val){
+                this.ingresoEditado = val;
+            },
+            deep: true
+        }
+    },
     methods:{
         agregarCuenta(){
             this.ingresoEditado.detalleCuentas.push({

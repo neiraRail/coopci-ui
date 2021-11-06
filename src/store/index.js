@@ -304,29 +304,8 @@ const ingresos = {
     },
     setIngresoEditado(state, value){
       state.ingresoEditado = value
-    },
-    resetIngresoEditado(state){
-      state.ingresoEditado = {
-        ingresoId: '',
-        ingTitulo: '',
-        ingRut: '',
-        ingLugar: 'Temuco',
-        ingFecha: '',
-        ingGlosa: '',
-        cuotaSocios: [],
-        cuotaCreditos: [],
-        detalleCuentas: []
-      }
-    },
-    setIngresoEditado_ingresoId(state, value){
-      state.ingresoEditado.ingresoId = value
-    },
-    setIngresoEditado_ingTitulo(state, value){
-      state.ingresoEditado.ingTitulo = value
-    },
-    setIngresoEditado_ingRut(state, value){
-      state.ingresoEditado.ingRut = value
-    },
+    }
+    
   },
   actions: {
     fetchIngresosPorMes({commit}, {mes, año}){
