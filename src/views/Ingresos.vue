@@ -38,13 +38,18 @@ export default {
       FiltrosIngresos: () => import("@/components/ingreso/FiltrosIngresos"),
       AccionIngresos: () => import("@/components/ingreso/AccionIngresos")
     },
+    computed:{
+      filtro_mes(){
+        return this.$store.state.ingresos.filtro_mes
+      },
+      filtro_año(){
+        return this.$store.state.ingresos.filtro_año
+      }
+    },
     methods:{
       ...mapActions('ingresos', ["fetchIngresosPorMes"]),
       fetchIngresos(){
-        const mesActual = new Date().getMonth()
-        const añoActual = new Date().getFullYear()
-        console.log(añoActual)
-        this.fetchIngresosPorMes({mes: mesActual, año: añoActual})
+        this.fetchIngresosPorMes({mes: this.filtro_mes.nro, año: this.filtro_año})
       }
     },
     mounted(){

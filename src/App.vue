@@ -49,6 +49,25 @@ export default {
       {name: 'Ingresos', to: '/Ingresos'}
       ]
   }),
+  mounted(){
+    //Buscar fecha actual para mantener guardada
+    const meses = [
+      {nombre: "Enero", nro: "1"},
+      {nombre: "Febrero", nro: "2"},
+      {nombre: "Marzo", nro: "3"},
+      {nombre: "Abril", nro: "4"},
+      {nombre: "Mayo", nro: "5"},
+      {nombre: "Junio", nro: "6"},
+      {nombre: "Julio", nro: "7"},
+      {nombre: "Agosto", nro: "8"},
+      {nombre: "Septiembre", nro: "9"},
+      {nombre: "Octubre", nro: "10"},
+      {nombre: "Noviembre", nro: "11"},
+      {nombre: "Diciembre", nro: "12"},
+    ]
+    this.$store.commit('ingresos/setFiltroMes', meses[new Date().getMonth()])
+    this.$store.commit('ingresos/setFiltroAño', new Date().getFullYear())
+  }
 };
 </script>
 

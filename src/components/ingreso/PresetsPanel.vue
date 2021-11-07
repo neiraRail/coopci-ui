@@ -29,6 +29,7 @@ export default {
         return{
             preset: {nombre: "Sin preset", plantilla: {}},
             default: {nombre: "Sin preset", plantilla: {}},
+            // hacerlos en la bd
             presets:[
                 {
                     nombre: "Credito1",

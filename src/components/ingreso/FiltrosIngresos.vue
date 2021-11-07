@@ -42,8 +42,6 @@ import { mapActions } from 'vuex'
 export default {
     data(){
       return {
-        filtro_mes: '',
-        filtro_año: '',
         meses: [
           {nombre: "Enero", nro: "1"},
           {nombre: "Febrero", nro: "2"},
@@ -61,13 +59,34 @@ export default {
         años: []
       }
     },
+    computed: {
+      filtro_mes: {
+        get(){
+          return this.$store.state.ingresos.filtro_mes
+        },
+        set(value){
+          this.$store.commit('ingresos/setFiltroMes', value)
+        }
+      },
+      filtro_año: {
+        get(){
+          return this.$store.state.ingresos.filtro_año
+        },
+        set(value){
+          this.$store.commit('ingresos/setFiltroAño', value)
+        }
+      }
+    },
     methods:{
       sigMes(){
+        //Si es diciembre cambiar a enero del año siguiente
         if(this.filtro_mes.nro == 12){
-          this.filtro_mes = this.meses[0]
-          this.filtro_año = this.años[(this.filtro_año-2015)%(this.años.length)]
+          this.$store.commit('ingresos/setFiltroMes', this.meses[0])
+          //Cambiar a año siguiente o al principio si se llega al ultimo.
+          this.$store.commit('ingresos/setFiltroAño', this.años[(this.filtro_año-2015)%(this.años.length)])
         }else{
-          this.filtro_mes = this.meses[this.filtro_mes.nro]
+          //Avanzar normalmente de mes
+          this.$store.commit('ingresos/setFiltroMes', this.meses[this.filtro_mes.nro])
         }
         this.cambiarMes()
       },
@@ -75,27 +94,26 @@ export default {
         //Si es ENERO hay que cambiar a diciembre del año anterior
         if(this.filtro_mes.nro == 1){
           //cambiar mes a diciembre
-          this.filtro_mes = this.meses[11]
+          this.$store.commit('ingresos/setFiltroMes', this.meses[11])
           //Cambiar a año anterior pero si el año es 2016 cambiar al último.
-          this.filtro_año = this.años[this.años.length-((this.años.length-(this.filtro_año-2016))%this.años.length)-1]
+          this.$store.commit('ingresos/setFiltroAño', this.años[this.años.length-((this.años.length-(this.filtro_año-2016))%this.años.length)-1])
         }else{
-          this.filtro_mes = this.meses[this.filtro_mes.nro-2]
+          //Retroceder normalmente de mes
+          this.$store.commit('ingresos/setFiltroMes', this.meses[this.filtro_mes.nro-2])
         }
         this.cambiarMes()
       },
       cambiarMes(){
         if(this.filtro_mes)
-          this.fetchIngresosPorMes({mes: this.filtro_mes.nro, año:this.filtro_año})
+          this.fetchIngresosPorMes({mes: this.filtro_mes.nro, año: this.filtro_año})
       },
       ...mapActions('ingresos', ["fetchIngresosPorMes"])
     },
-    mounted(){
+    mounted(){      
       const añoActual = new Date().getFullYear()
       for(let a = 2016; a<=añoActual; a++){
-        this.años.push(a)
-      }
-      this.filtro_mes = this.meses[new Date().getMonth()]
-      this.filtro_año = añoActual
+      this.años.push(a)
+    }
     }
 }
 </script>

@@ -139,7 +139,6 @@ export default {
             if(this.ingresoEditado.detalleCuentas.length > 1){
                 let suma = 0
                 for(let ct of this.ingresoEditado.detalleCuentas){
-                    console.log(1+1)
                     suma= parseInt(suma) + (ct.debe ? parseInt(ct.debe):0)                                        
                 }
                 return suma
@@ -153,7 +152,6 @@ export default {
             if(this.ingresoEditado.detalleCuentas.length > 1){
                 let suma = 0
                 for(let ct of this.ingresoEditado.detalleCuentas){
-                    console.log(1+1)
                     suma= parseInt(suma) + (ct.haber ? parseInt(ct.haber):0)                                        
                 }
                 return suma

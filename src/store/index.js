@@ -288,6 +288,8 @@ const ingresos = {
     ingresosSeleccionados: [],
     ingresoEditado: {},
     ingresoActual: 1,
+    filtro_mes: null,
+    filtro_año: null
   }),
   mutations: {
     setIngresosMes(state, value){
@@ -304,8 +306,13 @@ const ingresos = {
     },
     setIngresoEditado(state, value){
       state.ingresoEditado = value
-    }
-    
+    },
+    setFiltroMes(state, value){
+      state.filtro_mes = value
+    },
+    setFiltroAño(state, value){
+      state.filtro_año = value
+    }    
   },
   actions: {
     fetchIngresosPorMes({commit}, {mes, año}){

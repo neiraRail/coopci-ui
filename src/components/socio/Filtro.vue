@@ -108,7 +108,6 @@ export default {
             //Filtrar si los combobox no están vacios
             if(this.filtro_columna && val.length>0){  
                 let filtrados = []
-                console.log("hay un filtro")
                 for(let opcion of val){
                     filtrados = filtrados.concat(this.socios.filter(socio=>{
                         let arr = this.filtro_columna.attr.split('.') 

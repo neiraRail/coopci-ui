@@ -267,7 +267,6 @@ export default {
     },
     computed:{
       correosOrd(){
-        console.log("computed")
         let newArray = this.socio.correos
         newArray.sort((correo1, correo2)=>{
             return correo1.prioridad - correo2.prioridad
