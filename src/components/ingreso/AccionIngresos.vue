@@ -5,7 +5,13 @@
         <v-container>
             <v-row>
                 <v-col>
-                    <v-btn block color="#70C1B3" @click="crear"> Crear </v-btn>
+                    <v-btn 
+                        v-if="$router.currentRoute.path != '/EditorIngreso'"
+                        block color="#70C1B3" @click="crear"> Crear </v-btn>
+                    
+                    <v-btn
+                        v-if="$router.currentRoute.path == '/EditorIngreso'" 
+                        block color="#70C1B3"> Guardar </v-btn>
                 </v-col>
             </v-row>
             <v-row>
@@ -16,7 +22,7 @@
                         :disabled="ingresosSeleccionados.length==0" 
                         @click="ver"> Ver </v-btn>
                     <v-btn 
-                        v-if="$router.currentRoute.path == '/Detalleingreso'"
+                        v-if="$router.currentRoute.path != '/Ingresos'"
                         block
                         @click="volver"> Volver </v-btn>
                 </v-col>

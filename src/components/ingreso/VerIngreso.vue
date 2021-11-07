@@ -1,7 +1,8 @@
 <template>
     <v-sheet 
         min-height="160"
-        rounded="lg">
+        rounded="lg"
+        elevation="6">
         <v-container>
             <v-row class="ingHeader full">
                 <v-col md="10"><center><h2>Comprobante de Ingreso</h2></center></v-col>

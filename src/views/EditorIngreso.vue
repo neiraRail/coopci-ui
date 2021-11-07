@@ -7,7 +7,8 @@
           sm="6"
           md="2"
         >
-          <AccionIngresos/>
+          <v-row><v-col><AccionIngresos/></v-col></v-row>
+          <v-row><v-col><CuotasPanel/></v-col></v-row>
         </v-col>
         <v-col
           cols="12"
@@ -15,7 +16,7 @@
           md="8"
           order-sm="12"
         >
-           <FormIngreso/>   
+          <FormIngreso/>   
         </v-col>
         <v-col
           cols="12"
@@ -41,7 +42,8 @@ export default {
         FormIngreso: ()=> import('@/components/ingreso/FormIngreso'),
         PresetsPanel: ()=> import('@/components/ingreso/PresetsPanel'),
         AccionIngresos: ()=> import('@/components/ingreso/AccionIngresos'),
-        TablasCuotasIngreso: ()=> import('@/components/ingreso/TablasCuotasIngreso')
+        TablasCuotasIngreso: ()=> import('@/components/ingreso/TablasCuotasIngreso'),
+        CuotasPanel: ()=> import('@/components/ingreso/CuotasPanel')
     }
 }
 </script>

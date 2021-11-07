@@ -1,7 +1,8 @@
 <template>
     <v-sheet 
         min-height="160"
-        rounded="lg">
+        rounded="lg"
+        elevation="1">
         <v-container>
             <v-row class="ingHeader full">
                 <v-col md="9"><center><h2>Comprobante de Ingreso</h2></center></v-col>
@@ -98,8 +99,8 @@
             <v-row class="full">
                 <v-col md="2" class="ingCol left"><b>Total</b></v-col>
                 <v-col md="6"></v-col>
-                <v-col md="2" class="ingCol"><b>{{totalDebe}} </b></v-col>
-                <v-col md="2"><b>{{totalHaber}} </b></v-col>
+                <v-col md="2" :class="sumasValidas ? 'ingCol sumaValida': 'ingCol sumaNoValida'"><b>{{totalDebe}} </b></v-col>
+                <v-col md="2" :class="sumasValidas ? 'sumaValida' : 'sumaNoValida'"><b>{{totalHaber}} </b></v-col>
             </v-row>
             <v-row class="full">
                 <v-col md="2" class="ingCol left"><b>Glosa </b></v-col>
@@ -135,6 +136,9 @@ export default {
         }
     },
     computed:{
+        sumasValidas(){
+            return this.totalDebe === this.totalHaber
+        },
         totalDebe(){
             if(this.ingresoEditado.detalleCuentas.length > 1){
                 let suma = 0
@@ -218,6 +222,14 @@ export default {
 </script>
 
 <style>
+.sumaValida{
+    background-color: #70C1B3;
+}
+
+.sumaNoValida{
+    background-color: brown;
+}
+
 .ingCol{
     border-left: 1px black solid;
     border-right: 1px black solid;
