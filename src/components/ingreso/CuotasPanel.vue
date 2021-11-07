@@ -1,6 +1,6 @@
 <template>
     <v-sheet
-      min-height="160"
+      min-height="125"
       rounded="lg"
     >
       <v-container>
@@ -50,7 +50,7 @@
                     v-on="on"
                     @click="agregarCuotaCredito"
                     >
-                    Cuotas Credit
+                    Cuotas Cred
                     </v-btn>
                 </template>
 
