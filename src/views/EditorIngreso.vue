@@ -28,15 +28,39 @@
         </v-col>
       </v-row>
     </v-container>
-    <TablasCuotasIngreso/>
+    
+    <TablasCuotasIngreso :ingreso="ingresoEditado"/>
     </v-sheet>      
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
+  data(){
+    return{
+      cuotaSocioEditada:{
+        
+      },
+      cuotaCreditoEditada: {
+        credito: {
+          creditoId: ''
+        },
+        nroCuota: '',
+        interes: '',
+        amortizacion: ''
+      }
+    }
+  },
+  methods:{
+    agregarCuotaSocio(){
+      this.ingresoEditado.cuotaSocios.push(this.cuotaSocioEditada)
+    },
+    agregarCuotaCredito(){
+      this.ingresoEditado.cuotaCreditos.push(this.cuotaCreditoEditada)
+    }
+  },
   computed:{
-    ...mapState('ingresos', ['ingresoActual', 'ingresosSeleccionados'])
+    ...mapState('ingresos', ['ingresoEditado',])
   },
     components:{
         FormIngreso: ()=> import('@/components/ingreso/FormIngreso'),

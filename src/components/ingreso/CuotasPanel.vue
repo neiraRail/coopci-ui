@@ -17,7 +17,6 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    @click="agregarCuotaSocio"
                     >
                     Cuotas Socio
                     </v-btn>
@@ -48,7 +47,6 @@
                     dark
                     v-bind="attrs"
                     v-on="on"
-                    @click="agregarCuotaCredito"
                     >
                     Cuotas Cred
                     </v-btn>
@@ -59,7 +57,30 @@
                     Agregar cuotas crédito
                     </v-card-title>
 
-                    <v-card-text >          
+                    <v-card-text > 
+                        <v-container>
+                          <v-row>
+                            <v-col md="3">Folio</v-col>
+                            <v-col md="3">Nro Cuota</v-col>
+                            <v-col md="3">Interes</v-col>
+                            <v-col md="3">Amortizacion</v-col>
+                          </v-row>
+                          <v-row v-for="(cuota, index) in ingresoEditado.cuotaCreditos" :key="index">
+                            <v-col md="3">{{cuota.credito.creditoId}}</v-col>
+                            <v-col md="3">{{cuota.nroCuota}}</v-col>
+                            <v-col md="3"><v-text-field label="Amortizacion"></v-text-field></v-col>
+                            <v-col md="3">Amortizacion</v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col md="2" >
+                                <v-btn block @click="agregarCuotaCred">+</v-btn>
+                            </v-col>
+                            <v-col md="2" >
+                                <v-btn block @click="quitarCuotaCred">-</v-btn>
+                            </v-col>
+                            <v-col md="8"></v-col>
+                          </v-row>
+                        </v-container>         
                     </v-card-text>
                 </v-card>
             </v-dialog>
@@ -72,16 +93,22 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapState } from 'vuex'
 export default Vue.extend({
     data(){
         return{
             dialogCred: false,
+            dialogSocio: false
         }
+    },
+    computed:{
+      ...mapState('ingresos',['ingresoEditado'])
     },
     methods:{
         agregarCuotaSocio(){
         },
-        agregarCuotaCredito(){
+        agregarCuotaCred(){
+          this.ingresoEditado.cuotaCreditos.push({})
         }
     },
     

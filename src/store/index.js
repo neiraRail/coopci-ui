@@ -286,7 +286,17 @@ const ingresos = {
   state: () => ({
     ingresosMes: [],
     ingresosSeleccionados: [],
-    ingresoEditado: {},
+    ingresoEditado: {
+      ingresoId: '',
+      ingTitulo: '',
+      ingRut: '',
+      ingLugar: 'Temuco',
+      ingFecha: '',
+      ingGlosa: '',
+      cuotaSocios: [],
+      cuotaCreditos: [],
+      detalleCuentas: []
+  },
     ingresoActual: 1,
     filtro_mes: null,
     filtro_año: null

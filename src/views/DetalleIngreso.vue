@@ -27,7 +27,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <TablasCuotasIngreso/>
+    <TablasCuotasIngreso :ingreso="ingresosSeleccionados[ingresoActual-1]"/>
     </v-sheet>      
 </template>
 

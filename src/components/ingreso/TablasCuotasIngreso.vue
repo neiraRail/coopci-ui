@@ -30,6 +30,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  props: ['ingreso'],
     data(){
         return{
             headerCredito: [
@@ -50,7 +51,7 @@ export default {
     },
     computed:{
         ...mapState('ingresos', ['ingresosSeleccionados', 'ingresoActual']),
-        ingreso(){
+        ingresos(){
             if(this.ingresosSeleccionados.length>=1){
                 return this.ingresosSeleccionados[this.ingresoActual-1]
             }
