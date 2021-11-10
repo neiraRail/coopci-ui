@@ -29,43 +29,34 @@
 
                     <v-card-text>
                       <v-container>
-                        <v-row class="full">
-                            <v-col md="2" class="ingCol left"><b>Nro socio</b></v-col>
-                            <v-col md="2"><b>Nombre</b></v-col>
-                            <v-col md="2" class="ingCol"><b>Capital</b></v-col>
-                            <v-col md="2"><b>Fondo</b></v-col>
-                            <v-col md="2" class="ingCol"><b>Social</b></v-col>
-                            <v-col md="2"><b>Nro cuotas</b></v-col>
-                        </v-row>
-
                         <v-row v-for="(cuota, index) in ingresoEditado.cuotaSocios" :key="index">
-                            <v-col md="2" class="ingCol left field">
-                              <v-text-field dense></v-text-field>
+                            <v-col md="2">
+                              <v-text-field dense label="Nro Socio"
+                                v-model.number="cuota.socioEntidad.nro_registro"
+                                :rules="[!/([\D])/.test(ingresoEditado.cuotaSocios[index].socioEntidad.nro_registro)]"
+                                @change="buscarSocio(cuota.socioEntidad.nro_registro, index)"
+                              ></v-text-field>
                           </v-col>
-                          <v-col md="2">{{cuota.socioEntidad.nombre1}} </v-col>
-                          <v-col md="2" class="ingCol field">
-                              <v-text-field
+                          <v-col md="4">{{cuota.socioEntidad.nombre1 +" "+ cuota.socioEntidad.nombre2 +" "+ cuota.socioEntidad.apellido1 +" "+cuota.socioEntidad.apellido2}} </v-col>
+                          <v-col md="2">
+                              <v-text-field dense label="Capital"
                                   v-model.number ="cuota.capitalPagado"
-                                  dense
                                   :rules="[!/([\D])/.test(ingresoEditado.cuotaSocios[index].capitalPagado)]"
                               ></v-text-field>
                           </v-col>
-                          <v-col md="2" class="field">
-                              <v-text-field
+                          <v-col md="2">
+                              <v-text-field dense label="F. Solidario"
                                   v-model.number ="cuota.fondoSolidario"
-                                  dense
                                   :rules="[!/([\D])/.test(ingresoEditado.cuotaSocios[index].fondoSolidario)]"
                               ></v-text-field>
                           </v-col>
-                          <v-col md="2" class="field">
-                              <v-text-field
+                          <v-col md="2">
+                              <v-text-field dense label="Cuota Social"
                                   v-model.number ="cuota.cuotaSocial"
-                                  dense
                                   :rules="[!/([\D])/.test(ingresoEditado.cuotaSocios[index].cuotaSocial)]"
                               ></v-text-field>
                           </v-col>
                         </v-row>
-                        
                         <v-row class="full">
                           <v-col md="2" class="ingCol left"><v-btn @click="agregarCuotaSocio">Agregar</v-btn></v-col>
                           <v-col md="2" class="ingCol left"><v-btn @click="quitarCuotaSocio">Quitar</v-btn></v-col>
@@ -101,34 +92,27 @@
                     </v-card-title>
 
                     <v-card-text >
-                        <v-row class="full">
-                            <v-col md="3" class="ingCol left"><b>Folio</b></v-col>
-                            <v-col md="3"><b>Nro cuota</b></v-col>
-                            <v-col md="3" class="ingCol"><b>Interes</b></v-col>
-                            <v-col md="3"><b>Amortizacion</b></v-col>
-                        </v-row>
                         <v-row v-for="(cuota, index) in ingresoEditado.cuotaCreditos" :key="index">
-                          <v-col md="3" class="ingCol left field">
-                              <v-text-field dense label="Folio"></v-text-field>
+                          <v-col md="3">
+                              <v-text-field dense label="Folio"
+                                v-model="cuota.credito.creditoId"
+                              ></v-text-field>
                           </v-col>
-                          <v-col md="3" class="ingCol field">
-                              <v-text-field
+                          <v-col md="3">
+                              <v-text-field dense label="Nro Cuota"
                                   v-model.number ="cuota.nroCuota"
-                                  dense
                                   :rules="[!/([\D])/.test(ingresoEditado.cuotaCreditos[index].nroCuota)]"
                               ></v-text-field>
                           </v-col>
-                          <v-col md="3" class="field">
-                              <v-text-field
+                          <v-col md="3">
+                              <v-text-field dense label="Interes"
                                   v-model.number ="cuota.interes"
-                                  dense
                                   :rules="[!/([\D])/.test(ingresoEditado.cuotaCreditos[index].interes)]"
                               ></v-text-field>
                           </v-col>
-                          <v-col md="3" class="field">
-                              <v-text-field
+                          <v-col md="3">
+                              <v-text-field dense label="Amort"
                                   v-model.number ="cuota.amortizacion"
-                                  dense
                                   :rules="[!/([\D])/.test(ingresoEditado.cuotaCreditos[index].amortizacion)]"
                               ></v-text-field>
                           </v-col>
@@ -151,6 +135,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import socioService from "../../services/socio.service";
 export default Vue.extend({
     data(){
         return{
@@ -185,12 +170,25 @@ export default Vue.extend({
         }
     },
     methods:{
+        buscarSocio(id,index){
+          socioService.get(id).then((response)=>{
+            if(response.data.length == 0 || response.data === undefined){
+              //Aqui prodia ir un mensaje especial
+              console.log("len 0 o undefinedd")
+              return ''
+            }
+            for(const atr in response.data){
+              response.data[atr] = response.data[atr] || ""       
+            }
+            this.ingresoEditado.cuotaSocios[index].socioEntidad = response.data;
+          })
+        },
         agregarCuotaSocio(){
             this.ingresoEditado.cuotaSocios.push({
               socioEntidad: {
                 nroRegistro: '',
                 nombre1:'',
-                nombre2: '',
+                nombre2:'',
                 apellido1: '',
                 apellido2: ''
               },
@@ -215,7 +213,7 @@ export default Vue.extend({
         },
         quitarCuotaCredito(){
           this.ingresoEditado.cuotaCreditos.pop()
-        }
+        },
     },
     
 })

@@ -5,6 +5,7 @@ export const service = {
         return ApiService.get(url, { id: "" });
     },
     get(id) {
+        console.log("get(id)")
         return ApiService.get(url, { slug: id });
     },
     getByName(token) {
