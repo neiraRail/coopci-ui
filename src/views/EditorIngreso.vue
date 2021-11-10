@@ -28,8 +28,7 @@
         </v-col>
       </v-row>
     </v-container>
-    
-    <TablasCuotasIngreso :ingreso="ingresoEditado"/>
+    <TablasCuotasIngreso :ingreso="ingreso"/>
     </v-sheet>      
 </template>
 
@@ -60,7 +59,26 @@ export default {
     }
   },
   computed:{
-    ...mapState('ingresos', ['ingresoEditado',])
+    ...mapState('ingresos', ['ingresoActual', 'ingresosSeleccionados','ingresoEditado']),
+    ingreso(){
+      if(this.ingresosEditado){
+              return this.ingresosEditado
+            }
+            else{
+                this.$store.commit('ingresos/setIngresoEditado',{
+                    ingresoId: '',
+                    ingTitulo: '',
+                    ingRut: '',
+                    ingLugar: '',
+                    ingFecha: '',
+                    ingGlosa: '',
+                    cuotaSocios: [],
+                    cuotaCreditos: [],
+                    detalleCuentas: []
+                })
+                return this.ingresoEditado
+            }           
+    }
   },
     components:{
         FormIngreso: ()=> import('@/components/ingreso/FormIngreso'),

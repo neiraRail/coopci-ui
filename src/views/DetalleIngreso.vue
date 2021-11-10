@@ -27,7 +27,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <TablasCuotasIngreso :ingreso="ingresosSeleccionados[ingresoActual-1]"/>
+    <TablasCuotasIngreso :ingreso="ingreso"/>
     </v-sheet>      
 </template>
 
@@ -35,7 +35,25 @@
 import { mapState } from 'vuex'
 export default {
   computed:{
-    ...mapState('ingresos', ['ingresoActual', 'ingresosSeleccionados'])
+    ...mapState('ingresos', ['ingresoActual', 'ingresosSeleccionados']),
+    ingreso(){
+      if(this.ingresosSeleccionados.length>=1){
+                return this.ingresosSeleccionados[this.ingresoActual-1]
+            }
+            else{
+                return {
+                    ingresoId: '',
+                    ingTitulo: '',
+                    ingRut: '',
+                    ingLugar: '',
+                    ingFecha: '',
+                    ingGlosa: '',
+                    cuotaSocios: [],
+                    cuotaCreditos: [],
+                    detalleCuentas: []
+                }
+            }           
+    }
   },
     components:{
         VerIngreso: ()=> import('@/components/ingreso/VerIngreso'),

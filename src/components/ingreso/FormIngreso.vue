@@ -91,10 +91,10 @@
                 <v-col md="2" class="ingCol left field">
                     <v-btn block @click="agregarCuenta">+</v-btn>
                 </v-col>
-                <v-col md="1" class="field ingCol left">
+                <v-col md="2" class="field ingCol left">
                     <v-btn block @click="quitarCuenta">-</v-btn>
                 </v-col>
-                <v-col md="9"></v-col>
+                <v-col md="8"></v-col>
             </v-row>
             <v-row class="full">
                 <v-col md="2" class="ingCol left"><b>Total</b></v-col>

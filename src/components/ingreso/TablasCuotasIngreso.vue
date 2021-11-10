@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 export default {
   props: ['ingreso'],
     data(){
@@ -48,27 +47,6 @@ export default {
                 {text: 'Nro cuotas', value: 'nroCuotas', class: 'accent'},
             ]
         }
-    },
-    computed:{
-        ...mapState('ingresos', ['ingresosSeleccionados', 'ingresoActual']),
-        ingresos(){
-            if(this.ingresosSeleccionados.length>=1){
-                return this.ingresosSeleccionados[this.ingresoActual-1]
-            }
-            else{
-                return {
-                    ingresoId: '',
-                    ingTitulo: '',
-                    ingRut: '',
-                    ingLugar: '',
-                    ingFecha: '',
-                    ingGlosa: '',
-                    cuotaSocios: [],
-                    cuotaCreditos: [],
-                    detalleCuentas: []
-                }
-            }            
-        }
-    }    
+    }, 
 }
 </script>
