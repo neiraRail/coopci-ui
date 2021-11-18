@@ -216,10 +216,65 @@
 </template>
 <script>
 import enumsService from '@/services/enums.service'
-import { mapState } from 'vuex'
 export default {
   data(){
     return {
+      socioEditado: {
+        nro_registro: '',
+        tipo_persona: {
+            tipo_persona_nombre: ""
+        },
+        nombre1: "",
+        nombre2: "",
+        apellido1: "",
+        apellido2: "",
+        rut: "",
+        direccion: "",
+        direccion_comuna: {
+            comuna_nombre: "",
+            region: {
+                region_nombre: "",
+                pais: {
+                    pais_nombre: ""
+                }
+            }
+        },
+        sexo: {
+          sexo_nombre: ""
+        },
+        fecha_nac: "",
+        estado_civil: {
+            estado_civil_nombre: ""
+        },
+        nivel_educacional: {
+            nivel_educacional_nombre: ""
+        },
+        profesion_oficio: "",
+        sub_ocupacion: {
+            ocupacion_id: '',
+            ocupacion: "",
+            macro_ocp_id: {
+                macro_ocp_id: '',
+                maco_ocp_nombre: ""
+            }
+        },
+        motivacion: "",
+        part_trafkintun: '',
+        actividadProductiva: [],
+        organizacionSocio: [],
+        empleoSocio: [],
+        intencionCredito: [],
+        telefonos: [{
+          telefono: "",
+          tipo_tel:{
+              tipo_tel_nombre: ""
+          }  
+        }],
+        correos: [{
+            correo: "",
+            prioridad: ''
+        }]
+      },
       dialog: false,
       menu_date: false,
       comunas: [{
@@ -243,6 +298,20 @@ export default {
       sexos: [{
         sexo_nombre: ""
       }]
+    }
+  },
+  watch:{
+    socioEditado:{
+      handler(val){
+        this.$store.commit('socios/setSocioEditado', val)
+      },
+      deep: true
+    },
+    "$store.state.socios.socioEditado":{
+      handler(val){
+        this.socioEditado = val
+      },
+      deep: true
     }
   },
   methods: {
@@ -272,9 +341,6 @@ export default {
       })
     }
   },
-  computed: {
-    ...mapState('socios',['socioEditado'])
-  },
   mounted(){
     this.fetchComunas()
     this.fetchNivelEducacionales()
@@ -285,7 +351,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .field{
     padding-top: 0;
     padding-bottom: 0;
