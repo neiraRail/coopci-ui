@@ -18,27 +18,27 @@ const routes = [
       return import('../views/EditorSocio.vue')
     }
   },
-  {
-    path: '/ingresos',
-    name: 'Ingresos',
-    component: function() {
-      return import('../views/Ingresos.vue')
-    }
-  },
-  {
-    path: '/detalleingreso',
-    name: 'DetalleIngreso',
-    component: function() {
-      return import('../views/DetalleIngreso.vue')
-    }
-  },
-  {
-    path: '/editoringreso',
-    name: "EditorIngreso",
-    component: function() {
-      return import('../views/EditorIngreso')
-    }
-  }
+  // {
+  //   path: '/ingresos',
+  //   name: 'Ingresos',
+  //   component: function() {
+  //     return import('../views/Ingresos.vue')
+  //   }
+  // },
+  // {
+  //   path: '/detalleingreso',
+  //   name: 'DetalleIngreso',
+  //   component: function() {
+  //     return import('../views/DetalleIngreso.vue')
+  //   }
+  // },
+  // {
+  //   path: '/editoringreso',
+  //   name: "EditorIngreso",
+  //   component: function() {
+  //     return import('../views/EditorIngreso')
+  //   }
+  // }
   
 ]
 

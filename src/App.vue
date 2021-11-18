@@ -45,8 +45,8 @@ export default {
     links: [
       {name: 'Home', to: '/Home'},
       {name: 'Buscar', to: '/Buscador'},
-      {name: 'Editar', to: '/Editor'},
-      {name: 'Ingresos', to: '/Ingresos'}
+      //{name: 'Editar', to: '/Editor'},
+      //{name: 'Ingresos', to: '/Ingresos'}
       ]
   }),
   mounted(){
