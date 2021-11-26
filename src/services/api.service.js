@@ -1,12 +1,12 @@
 import axios from "axios";
+import authHeader from './auth-header';
 import { API_URL } from '@/common/config.js'
 var swisApi = axios.create({ baseURL: API_URL });
 
 const apiService = {
   setHeader() {
-    var token = localStorage.getItem('jwt');
     swisApi.defaults.headers.common["Authorization"]
-      = `Bearer ${token}`;
+      = authHeader().Authorization;
   },
   post(route, { params = " ", slug = "" }) {
     //this.setHeader();
@@ -21,7 +21,7 @@ const apiService = {
     });
   },
   get(route, { slug = "" }) {
-    //this.setHeader();
+    this.setHeader();
     return swisApi.get(`${route}/${slug}`).catch(error => {
       throw new Error(`ApiService Error: ${error}`);
     });
