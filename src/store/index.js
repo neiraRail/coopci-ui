@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import socioService from "@/services/socio.service";
 import ingresoService from "@/services/ingreso.service";
+import { auth } from './auth.module';
 var cloneDeep = require('lodash.clonedeep');
 
 Vue.use(Vuex)
@@ -357,6 +358,7 @@ export default new Vuex.Store({
   },
   modules: {
     socios: socios,
-    ingresos: ingresos
+    ingresos: ingresos,
+    auth
   }
 })

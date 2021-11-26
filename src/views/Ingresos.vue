@@ -44,7 +44,10 @@ export default {
       },
       filtro_año(){
         return this.$store.state.ingresos.filtro_año
-      }
+      },
+      currentUser() {
+        return this.$store.state.auth.user;
+      } 
     },
     methods:{
       ...mapActions('ingresos', ["fetchIngresosPorMes"]),
@@ -53,8 +56,12 @@ export default {
       }
     },
     mounted(){
-      this.$store.commit('ingresos/resetIngresosSeleccionados')
-      this.fetchIngresos()
+      if (!this.currentUser) {
+        this.$router.push('/login');
+      }else{
+        this.$store.commit('ingresos/resetIngresosSeleccionados')
+        this.fetchIngresos()
+      }
     }
 }
 </script>

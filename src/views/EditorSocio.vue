@@ -17,7 +17,7 @@
           md="8"
           order-sm="12"
         >
-          <CamposEdicion />
+          <CamposEdicion v-if="currentUser"/>
         </v-col>
         <v-col
           cols="12"
@@ -47,14 +47,22 @@ export default {
     estiloFondo(){
       return this.modoEditar ? 'grey lighten-1' : 'grey lighten-3'
     },
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
     ...mapState('socios', ['sociosFiltrados','socioActual'])
   },
   methods: {
     ...mapActions('socios', ["restablecerEdicion"])
   },
   mounted(){
-    //inicializar socioEditado 
-    this.restablecerEdicion();   
+    if (!this.currentUser) {
+      this.$router.push('/login');
+    }else{
+      //inicializar socioEditado 
+      this.restablecerEdicion();  
+    }
+     
   }    
 }
 </script>

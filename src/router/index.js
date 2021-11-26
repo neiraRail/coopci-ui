@@ -1,6 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -38,7 +42,21 @@ const routes = [
     component: function() {
       return import('../views/EditorIngreso')
     }
-  }
+  },
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/register',
+    component: Register
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    // lazy-loaded
+    component: () => import('../views/Profile.vue')
+  },
   
 ]
 

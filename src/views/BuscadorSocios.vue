@@ -50,13 +50,21 @@ export default {
       },    
     },
     computed: {        
-      ...mapState('socios',['socioActual','socios','sociosFiltrados'])        
+      ...mapState('socios',['socioActual','socios','sociosFiltrados']),
+      currentUser() {
+        return this.$store.state.auth.user;
+      }       
     },
     components: {
       ResultadoBuscador:() => import("@/components/socio/ResultadoBuscador"),
       Navegador:() => import("@/components/socio/Navegador"),
       Filtro:() => import("@/components/socio/Filtro"), 
       PanelBusqueda: () => import('@/components/socio/PanelBusqueda')     
+    },
+    mounted(){
+      if (!this.currentUser) {
+        this.$router.push('/login');
+      }
     }
 }
 </script>
