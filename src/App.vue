@@ -27,6 +27,7 @@
         class="hidden-sm-and-down"
         color="grey darken-1 shrink"
         size="32"
+        @click="$router.push('/profile')"
       ></v-avatar>
     </v-app-bar>
     <v-main class="grey lighten-3">
@@ -49,6 +50,11 @@ export default {
       {name: 'Ingresos', to: '/Ingresos'}
       ]
   }),
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+  },
   mounted(){
     //Buscar fecha actual para mantener guardada
     const meses = [
@@ -67,6 +73,10 @@ export default {
     ]
     this.$store.commit('ingresos/setFiltroMes', meses[new Date().getMonth()])
     this.$store.commit('ingresos/setFiltroAño', new Date().getFullYear())
+
+    if(!this.loggedIn){
+      this.$router.push('/login');
+    }
   }
 };
 </script>
