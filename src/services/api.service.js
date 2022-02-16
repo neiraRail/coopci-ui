@@ -14,6 +14,15 @@ const apiService = {
       throw new Error(error.response.data.message);
     });
   },
+  postFile(route, file){
+    return swisApi.post(`${route}`, file, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).catch(error => {
+      throw new Error(error.response.data.message);
+    })
+  },
   update(route, { params = " ", slug = "" }) {
     //this.setHeader();
     return swisApi.put(`${route}/${slug}`, params).catch(error => {
