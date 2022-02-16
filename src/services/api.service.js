@@ -15,7 +15,10 @@ const apiService = {
     });
   },
   postFile(route, file){
-    return swisApi.post(`${route}`, file, {
+    this.setHeader();
+    const file_formdata = new FormData()
+    file_formdata.append('file', file)
+    return swisApi.post(`${route}`, file_formdata, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

@@ -8,16 +8,17 @@
 </template>
 
 <script>
-
+import fileService from '@/services/file.service'
 export default {
     data(){
         return {
-            file: ''
+            file: null
         }
     },
     methods:{
         subirArchivo(){
-            alert("hola")
+            fileService.upload(this.file);
+            alert("subiendo archivo")
         }
     }
     
