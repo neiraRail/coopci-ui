@@ -48,7 +48,7 @@ const socios = {
           ocupacion: "",
           macro_ocp_id: {
               macro_ocp_id: '',
-              maco_ocp_nombre: ""
+              macro_ocp_nombre: ""
           }
       },
       motivacion: "",
@@ -104,7 +104,7 @@ const socios = {
           ocupacion: "",
           macro_ocp_id: {
               macro_ocp_id: '',
-              maco_ocp_nombre: ""
+              macro_ocp_nombre: ""
           }
       },
       motivacion: "",
@@ -160,7 +160,7 @@ const socios = {
           ocupacion: "",
           macro_ocp_id: {
               macro_ocp_id: '',
-              maco_ocp_nombre: ""
+              macro_ocp_nombre: ""
           }
       },
       motivacion: "",
