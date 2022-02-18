@@ -46,8 +46,8 @@ export default {
     links: [
       {name: 'Home', to: '/Home'},
       {name: 'Buscar', to: '/Buscador'},
-      //{name: 'Editar', to: '/Editor'},
-      //{name: 'Ingresos', to: '/Ingresos'}
+      {name: 'Editar', to: '/Editor'},
+      {name: 'Ingresos', to: '/Ingresos'}
       ]
   }),
   computed: {
@@ -73,10 +73,17 @@ export default {
     ]
     this.$store.commit('ingresos/setFiltroMes', meses[new Date().getMonth()])
     this.$store.commit('ingresos/setFiltroAño', new Date().getFullYear())
+    console.log("Mounting...")
 
+    
     if(!this.loggedIn){
       this.$router.push('/login');
     }
+
+    window.addEventListener('beforeunload', ()=>{
+      console.log("logout")
+      this.$store.commit('auth/logout')
+    })
   }
 };
 </script>
