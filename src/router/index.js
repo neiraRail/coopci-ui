@@ -62,6 +62,12 @@ const routes = [
     name: 'subir',
     // lazy-loaded
     component: () => import('../views/SubirPlanilla.vue')
+  },
+  {
+    path: '/resultadosubir',
+    name: 'resultadosubir',
+    // lazy-loaded
+    component: () => import('../views/PlanillaSubida.vue')
   }
   
 ]

@@ -80,10 +80,10 @@ export default {
       this.$router.push('/login');
     }
 
-    window.addEventListener('beforeunload', ()=>{
-      console.log("logout")
-      this.$store.commit('auth/logout')
-    })
+    // window.addEventListener('beforeunload', ()=>{
+    //   console.log("logout")
+    //   this.$store.dispatch('auth/logout')
+    // })
   }
 };
 </script>
