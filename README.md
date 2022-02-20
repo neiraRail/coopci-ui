@@ -5,7 +5,7 @@ Frontend del proyecto coopci. Contiene vistas para las operaciones básicas de C
 ## Estado actual
 Actualmente implementando requisito de permitir subir a través de una planilla Excel un listado de 'socios' a la base de datos.
 
-![image](https://user-images.githubusercontent.com/53882048/154560929-9f54e700-6655-4e71-b58b-254869e443b2.png)
+![image](https://user-images.githubusercontent.com/53882048/154828061-4d462ab2-068f-4de4-92a8-32233c31c3b8.png)
 
 
 
