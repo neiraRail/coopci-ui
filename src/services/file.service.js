@@ -1,5 +1,5 @@
 import ApiService from "@/services/api.service";
-const url = "files";
+const url = "socio/excel";
 export const service = {
     upload(file) {
         return ApiService.postFile(url, file);

@@ -67,7 +67,8 @@ const routes = [
     path: '/resultadosubir',
     name: 'resultadosubir',
     // lazy-loaded
-    component: () => import('../views/PlanillaSubida.vue')
+    component: () => import('../views/PlanillaSubida.vue'),
+    props: true
   }
   
 ]

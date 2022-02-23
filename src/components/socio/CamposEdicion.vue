@@ -9,25 +9,25 @@
       <v-col cols="2" md="2" class="field" v-if="socioEditado.nombre1!=null">
         <v-text-field class="field" dense
           v-model="socioEditado.nombre1"
-          :rules="[!/[^a-z]/i.test(socioEditado.nombre1)]"
+          :rules="[!/[^a-zA-ZÀ-ÿ\u00f1\u00d1]/i.test(socioEditado.nombre1)]"
         ></v-text-field>
       </v-col>
       <v-col cols="2" md="2" class="field" v-if="socioEditado.nombre1!=null">
         <v-text-field class="field" dense
           v-model="socioEditado.nombre2"
-          :rules="[!/[^a-z]/i.test(socioEditado.nombre2)]"
+          :rules="[!/[^a-zA-ZÀ-ÿ\u00f1\u00d1]/i.test(socioEditado.nombre2)]"
         ></v-text-field>
       </v-col>
       <v-col cols="2" md="2" class="field" v-if="socioEditado.nombre1!=null">
         <v-text-field class="field" dense
           v-model="socioEditado.apellido1"
-          :rules="[!/[^a-z]/i.test(socioEditado.apellido1)]"
+          :rules="[!/[^a-zA-ZÀ-ÿ\u00f1\u00d1]/i.test(socioEditado.apellido1)]"
         ></v-text-field>
       </v-col>
       <v-col cols="2" md="2" class="field" v-if="socioEditado.nombre1!=null">
         <v-text-field class="field" dense
           v-model="socioEditado.apellido2"
-          :rules="[!/[^a-z]/i.test(socioEditado.apellido2)]"
+          :rules="[!/[^a-zA-ZÀ-ÿ\u00f1\u00d1]/i.test(socioEditado.apellido2)]"
         ></v-text-field>
       </v-col>
       <v-col cols="1" md="1" class="nombre-dato full-all">Nro</v-col> 

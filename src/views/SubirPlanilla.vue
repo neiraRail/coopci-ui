@@ -100,15 +100,20 @@ export default {
     methods:{
         subirArchivo(){
             this.dialog = true;
-            setTimeout(()=> this.dialog = false, 2000)
             fileService.upload(this.file).then((response)=>{
+                this.file = null;
                 //gpasar la respuesta de alguna manera
-                this.$router.push('resultadosubir')
-                console.log(response)
+                setTimeout(()=>{
+                    this.$router.push({name: 'resultadosubir', params: {respuesta: response}})
+                    console.log(response)
+                    this.dialog = false
+                }, 500)                
             }).catch((error)=>{
+                setTimeout(()=>{
+                    this.dialog = false
+                }, 500)
                 console.log(error)
             })
-            this.file = null;
         }
     }
     
