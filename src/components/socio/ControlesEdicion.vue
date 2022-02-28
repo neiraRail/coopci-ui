@@ -7,6 +7,12 @@
       <v-row>
         <v-col cols="12"><v-btn block @click="guardar">Guardar</v-btn></v-col>
       </v-row>
+      <br>
+      <v-divider></v-divider>
+      <br>
+      <v-row>
+        <v-col cols="12"><v-btn block @click="eliminar" color="error">Eliminar</v-btn></v-col>
+      </v-row>
     </v-container>
   </v-sheet>
 </template>
@@ -22,7 +28,10 @@ export default {
         this.editarSocio()
         this.$router.push("/Buscador")
       },
-      ...mapActions('socios', ['restablecerEdicion', 'editarSocio'])
+      eliminar(){
+        this.eliminarSocio()
+      },
+      ...mapActions('socios', ['restablecerEdicion', 'editarSocio', 'eliminarSocio'])
     }
 }
 </script>

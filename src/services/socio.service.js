@@ -18,10 +18,10 @@ export const service = {
         return ApiService.post(url, { params: params });
     },
     update( params) {
-        return ApiService.post(url, { params: params });
+        return ApiService.update(url+'/editar', { params: params });
     },
     destroy(id) {
-        return ApiService.delete(url, { id: id });
+        return ApiService.delete(url+"/eliminar", { id: id });
     },
 };
 export default service;

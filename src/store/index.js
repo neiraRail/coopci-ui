@@ -275,10 +275,18 @@ const socios = {
     },
     editarSocio({dispatch, commit, state}){
       //Llamar a servicio editar.
+      socioService.update(state.socioEditado).then((response) => {
+        console.log(response)
+      })
       console.log("editar")
+      console.log(state.socioEditado)
       //Volver al principio o algo asi, volver a fetchear podria ser por el mismo id
       dispatch('fetchSocioPorId',state.sociosFiltrados[state.socioActual-1].nro_registro)
       commit('resetSocioActual')  
+    },
+    eliminarSocio({state}){
+      console.log("eliminar "+state.sociosFiltrados[state.socioActual-1].nro_registro)
+      socioService.destroy(state.sociosFiltrados[state.socioActual-1].nro_registro)
     }
   }
 }
