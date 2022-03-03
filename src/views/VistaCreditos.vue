@@ -12,10 +12,10 @@
 
           <v-col
             cols="12"
-            sm="6"
+            sm="12"
             md="2"
           >
-            
+            <Controles />
           </v-col>
         </v-row>
       </v-container>
@@ -30,7 +30,8 @@ export default {
         }
     },
     components: {
-        MainCreditos: () => import("@/components/credito/MainCreditos")
+        MainCreditos: () => import("@/components/credito/MainCreditos"),
+        Controles: () => import("@/components/credito/ControlesCreditos")
     },
     mounted(){
     }

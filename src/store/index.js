@@ -2,10 +2,28 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import socioService from "@/services/socio.service";
 import ingresoService from "@/services/ingreso.service";
+import creditoService from '@/services/credito.service'
 import { auth } from './auth.module';
 var cloneDeep = require('lodash.clonedeep');
 
 Vue.use(Vuex)
+
+const creditos = {
+  namespaced: true,
+  state: ()=> ({
+    creditos: [{}],
+    creditosFiltrados: [{}],
+    creditoEditado: {}
+  }),
+  mutations: {
+    setCreditos(state, value){
+      state.creditos = value
+    }
+  },
+  actions: {
+
+  }
+}
 
 const socios = {
   namespaced: true,
@@ -370,11 +388,38 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    
+    fetchTodosLosCreditos({state, commit}){
+      commit('setCargando', true, {root: true})
+      creditoService.getAll().then((response)=>{
+        commit("creditos/setCreditos", response.data)
+        state.creditos.forEach((credito)=>{
+            credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
+
+            credito.ultimaPagada = Math.floor(credito.pagos.reduce((prv, curr)=>{
+                return prv + curr.interes + curr.amortizacion 
+            }, 0) / credito.valor_cuota)
+
+            let vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
+            let difference = Date.now() - vencimiento.getTime()
+            //Solo si es positivo
+            let retraso = Math.floor(difference/(1000*3600*24))
+            credito.diasRetraso = retraso > 0 ? retraso : 0
+
+            //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
+            credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
+                return prv + curr.interes
+            }, 0)
+        })
+        
+        state.commit("creditos/setCreditos",this.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
+        commit("setCargando", false, {root:true})
+    })
+    }
   },
   modules: {
     socios: socios,
     ingresos: ingresos,
-    auth
+    auth,
+    creditos: creditos
   }
 })

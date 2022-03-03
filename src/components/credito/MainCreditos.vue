@@ -67,12 +67,11 @@
 </template>
 
 <script>
-import creditoService from '@/services/credito.service'
+
 import { mapState } from 'vuex'
 export default {
     data(){
         return {
-            creditos: []
         }
     },
     methods:{
@@ -89,35 +88,12 @@ export default {
         }
     },
     computed:{
-        ...mapState(["cargando"])
+        ...mapState(["cargando"]),
+        ...mapState("creditos",["creditos"])
     },
     mounted(){
-        this.$store.commit("setCargando", true)
-        creditoService.getAll().then((response)=>{
-            this.creditos = response.data
-            
-            this.creditos.forEach((credito)=>{
-                credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
-
-                credito.ultimaPagada = Math.floor(credito.pagos.reduce((prv, curr)=>{
-                    return prv + curr.interes + curr.amortizacion 
-                }, 0) / credito.valor_cuota)
-
-                let vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
-                let difference = Date.now() - vencimiento.getTime()
-                //Solo si es positivo
-                let retraso = Math.floor(difference/(1000*3600*24))
-                credito.diasRetraso = retraso > 0 ? retraso : 0
-
-                //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
-                credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
-                    return prv + curr.interes
-                }, 0)
-            })
-            
-            this.creditos = this.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso)
-            this.$store.commit("setCargando", false)
-        })
+        this.$store.dispatch("creditos/fetchTodosLosCreditos")
+        
     }
 }
 </script>
