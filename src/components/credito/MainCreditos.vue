@@ -1,5 +1,5 @@
 <template>
-    <v-sheet
+    <v-sheet v-if="creditos.length > 0"
       min-height="70vh"
       rounded="lg"
     >
@@ -31,29 +31,29 @@
                     >
                         <v-container >
                         <v-row class="text-caption">
-                            <v-col cols="1">Folio</v-col>
+                            <v-col cols="1" :class="criterioOrden=='Folio' ? 'font-weight-black':''">Folio</v-col>
                             <v-col cols="6" class="text-center">Nombre del socio</v-col>
                             <v-col class="text-right">Nro de cuotas</v-col>
-                            <v-col class="text-right">Monto</v-col>
+                            <v-col class="text-right" :class="criterioOrden=='Monto' ? 'font-weight-black':''">Monto</v-col>
                         </v-row>
                         <v-row class="">
-                            <v-col cols="1">{{credito.nroFolio}}</v-col>
+                            <v-col cols="1" :class="criterioOrden=='Folio' ? 'font-weight-black':''">{{credito.nroFolio}}</v-col>
                             <v-col cols="6" class="text-center">{{credito.socio.nombre1}} {{credito.socio.nombre2}} {{credito.socio.apellido1}} {{credito.socio.apellido2}}</v-col>
                             <v-col class="text-right">{{credito.nro_cuotas}}</v-col>
-                            <v-col class="text-right">$ {{credito.montoEntregado}}</v-col>
+                            <v-col class="text-right" :class="criterioOrden=='Monto' ? 'font-weight-black':''">$ {{credito.montoEntregado}}</v-col>
                             
                         </v-row>
                         <v-row class="text-caption">
                             <v-col cols="3" class="text-center">Vencimiento sig. cuota</v-col>
                             <v-col cols="2" class="text-right">Ultima pagada</v-col>
-                            <v-col cols="2" class="text-right">Dias Retraso</v-col>
+                            <v-col cols="2" class="text-right" :class="criterioOrden=='Retraso' ? 'font-weight-black':''">Dias Retraso</v-col>
                             <v-col class="text-right">Cuotas atrasadas</v-col>
                             <v-col class="text-right">Valor cuota</v-col>
                         </v-row>
                         <v-row >
                             <v-col cols="3" class="text-center">{{credito.tablaDesarrollo[credito.ultimaPagada].vencimiento}}</v-col>
                             <v-col cols="2" class="text-right">{{credito.ultimaPagada}}</v-col>
-                            <v-col cols="2" class="text-right">{{credito.diasRetraso}}</v-col>
+                            <v-col cols="2" class="text-right" :class="criterioOrden=='Retraso' ? 'font-weight-black':''">{{credito.diasRetraso}}</v-col>
                             <v-col class="text-right">{{Math.floor(credito.diasRetraso/30)}}</v-col>
                             <v-col class="text-right">$ {{credito.valor_cuota}}</v-col>
                         </v-row>
@@ -89,7 +89,7 @@ export default {
     },
     computed:{
         ...mapState(["cargando"]),
-        ...mapState("creditos",["creditos"])
+        ...mapState("creditos",["creditos", "criterioOrden"])
     },
     mounted(){
         this.$store.dispatch("creditos/fetchTodosLosCreditos")

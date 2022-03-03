@@ -11,17 +11,87 @@ Vue.use(Vuex)
 const creditos = {
   namespaced: true,
   state: ()=> ({
-    creditos: [{}],
+    creditos: [{
+      "nroFolio": '',
+      "socio": {
+          "nro_registro": '',
+          "nombre1": "",
+          "nombre2": "",
+          "apellido1": "",
+          "apellido2": "",
+          "rut": "",
+          "telefonos": [],
+          "correos": []
+      },
+      "nro_cuotas": '',
+      "monto": '',
+      "interes": '',
+      "fecha_otorgamiento": "7",
+      "fecha_vencimiento": "",
+      "comision": 0,
+      "valor_cuota": '',
+      "estado": {
+          "estado_id": 1,
+          "estado_nombre": "Vigente"
+      },
+      "tablaDesarrollo": [{'vencimiento': ''}],
+      "pagos": [],
+      "ultimaPagada": 0,
+      "diasRetraso": '',
+      "montoEntregado": ''
+  }],
     creditosFiltrados: [{}],
-    creditoEditado: {}
+    creditoEditado: {},
+    criterioOrden: "Retraso"
   }),
   mutations: {
     setCreditos(state, value){
       state.creditos = value
+    },
+    ordenarPorFolio(state){
+      state.creditos = state.creditos.sort((a,b) => b.nroFolio-a.nroFolio)
+    },
+    ordenarPorRetraso(state){
+      state.creditos = state.creditos.sort((a,b)=> b.diasRetraso-a.diasRetraso)
+    },
+    ordenarPorMonto(state){
+      state.creditos = state.creditos.sort((a,b)=> b.montoEntregado-a.montoEntregado)
+    },
+    cambiarOrden(state){
+      state.creditos.reverse()
+    },
+    setCriterioOrden(state, value){
+      state.criterioOrden = value
     }
   },
   actions: {
+    fetchTodosLosCreditos({state, commit}){
+      commit('setCargando', true, {root: true})
+      creditoService.getAll().then((response)=>{
+        commit("setCreditos", response.data)
+        state.creditos.forEach((credito)=>{
+            credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
 
+            credito.ultimaPagada = Math.floor(credito.pagos.reduce((prv, curr)=>{
+                return prv + curr.interes + curr.amortizacion 
+            }, 0) / credito.valor_cuota)
+
+            let vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
+            let difference = Date.now() - vencimiento.getTime()
+            //Solo si es positivo
+            let retraso = Math.floor(difference/(1000*3600*24))
+            credito.diasRetraso = retraso > 0 ? retraso : 0
+
+            //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
+            credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
+                return prv + curr.interes
+            }, 0)
+        })
+        
+        commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
+        commit("setCargando", false, {root:true})
+    })
+    }
   }
 }
 
@@ -388,33 +458,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    fetchTodosLosCreditos({state, commit}){
-      commit('setCargando', true, {root: true})
-      creditoService.getAll().then((response)=>{
-        commit("creditos/setCreditos", response.data)
-        state.creditos.forEach((credito)=>{
-            credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
-
-            credito.ultimaPagada = Math.floor(credito.pagos.reduce((prv, curr)=>{
-                return prv + curr.interes + curr.amortizacion 
-            }, 0) / credito.valor_cuota)
-
-            let vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
-            let difference = Date.now() - vencimiento.getTime()
-            //Solo si es positivo
-            let retraso = Math.floor(difference/(1000*3600*24))
-            credito.diasRetraso = retraso > 0 ? retraso : 0
-
-            //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
-            credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
-                return prv + curr.interes
-            }, 0)
-        })
-        
-        state.commit("creditos/setCreditos",this.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
-        commit("setCargando", false, {root:true})
-    })
-    }
+    
   },
   modules: {
     socios: socios,
