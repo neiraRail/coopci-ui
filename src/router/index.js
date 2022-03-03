@@ -74,7 +74,13 @@ const routes = [
     path: '/creditos',
     name: 'creditos',
     // lazy-loaded
-    component: () => import('../views/VistaCreditos.vue'),
+    component: () => import('../views/VistaCreditos.vue')
+  },
+  {
+    path: '/VerCredito',
+    name: 'VerCredito',
+    // lazy-loaded
+    component: () => import('../views/VerCredito.vue'),
     props: true
   }
   

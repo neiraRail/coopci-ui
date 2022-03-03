@@ -366,7 +366,6 @@ export default new Vuex.Store({
   },
   mutations: {
     setCargando(state, value){
-      console.log("setting cargando")
       state.cargando = value;
     }
   },

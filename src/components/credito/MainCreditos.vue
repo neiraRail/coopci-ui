@@ -4,7 +4,7 @@
       rounded="lg"
     >
         <v-dialog
-            v-model="dialog"
+            v-model="cargando"
             hide-overlay
             persistent
             width="300"
@@ -68,11 +68,11 @@
 
 <script>
 import creditoService from '@/services/credito.service'
+import { mapState } from 'vuex'
 export default {
     data(){
         return {
-            creditos: [],
-            dialog: false
+            creditos: []
         }
     },
     methods:{
@@ -85,11 +85,14 @@ export default {
         },
         verCredito(credito){
             console.log(credito.nroFolio)
-            
+            this.$router.push({name: "VerCredito", params: {credito: credito}})
         }
     },
+    computed:{
+        ...mapState(["cargando"])
+    },
     mounted(){
-        this.dialog=true;
+        this.$store.commit("setCargando", true)
         creditoService.getAll().then((response)=>{
             this.creditos = response.data
             
@@ -113,7 +116,7 @@ export default {
             })
             
             this.creditos = this.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso)
-            this.dialog=false;
+            this.$store.commit("setCargando", false)
         })
     }
 }
