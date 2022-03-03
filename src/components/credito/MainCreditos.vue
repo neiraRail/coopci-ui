@@ -1,5 +1,5 @@
 <template>
-    <v-sheet v-if="creditos.length > 0"
+    <v-sheet v-if="creditos.length > 2"
       min-height="70vh"
       rounded="lg"
     >
