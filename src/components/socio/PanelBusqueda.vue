@@ -3,6 +3,26 @@
         rounded="lg"
         min-height="268"
     >
+        <v-dialog
+          v-model="cargando"
+          hide-overlay
+          persistent
+          width="300"
+        >
+        <v-card
+          color="primary"
+          dark
+        >
+            <v-card-text>
+            Solicitando informacion...
+            <v-progress-linear
+              indeterminate
+              color="white"
+              class="mb-1"
+            ></v-progress-linear>
+            </v-card-text>
+        </v-card>
+        </v-dialog>
     <!-- Buscador -->
         <v-container>
             <v-form 
@@ -61,7 +81,7 @@
     </v-sheet>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default {
     data(){
         return{
@@ -69,25 +89,28 @@ export default {
           cb_nombre: '',
           cb_apellido: '',
           cb_nroSocio: '',
+          
         }
     },
     methods: {
         fetchSocios(){
+            this.dialog=true;
+            console.log("dialog")
             //Validar el formulario
             if (this.$refs.formulario.validate()){
             //Resetear el número actual
             this.$store.commit('socios/resetSocioActual')
             //Si se buscó por el nro de socio
             if((this.cb_nombre === null || this.cb_nombre ==='') && (this.cb_apellido === null || this.cb_apellido === '')){
-                this.fetchSocioPorId(this.cb_nroSocio);
+                this.fetchSocioPorId(this.cb_nroSocio)
             }
             //Si se buscó por apellido
             else if(this.cb_nombre === null || this.cb_nombre===''){
-                this.fetchSociosPorApellido(this.cb_apellido);
+                this.fetchSociosPorApellido(this.cb_apellido)
             }
             //Si se buscó por nombre
             else if(this.cb_apellido === null || this.cb_apellido === ''){
-                this.fetchSociosPorNombre(this.cb_nombre);
+                this.fetchSociosPorNombre(this.cb_nombre)
             }
             }
             else{
@@ -97,9 +120,16 @@ export default {
             //Cerrar los paneles
             this.$store.commit('socios/cerrarPaneles')
             //Evento para limpiar filtros  
-            this.$emit('fetch')           
-        }, 
+            this.$emit('fetch') 
+                    
+        },
         ...mapActions('socios', ['fetchSocioPorId','fetchSociosPorApellido','fetchSociosPorNombre']) 
+    },
+    computed:{
+        ...mapState(["cargando"])
+    },
+    mounted(){
+        
     }
     
 }

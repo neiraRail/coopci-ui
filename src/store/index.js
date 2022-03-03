@@ -206,6 +206,7 @@ const socios = {
   },
   actions: {
     fetchSocioPorId({commit, state},id){
+      commit('setCargando', true, {root: true})
       socioService.get(id).then(response => {
         if(response.data.length == 0 || response.data === undefined){
           //Aqui prodia ir un mensaje especial
@@ -218,9 +219,11 @@ const socios = {
         commit('setSocios', [response.data])
         //Guardar todos los socios como socios filtrados
         commit('setSociosFiltrados',state.socios)
+        commit('setCargando', false, {root: true})
       })      
     },
     fetchSociosPorApellido({commit, state},apellido){
+      commit('setCargando', true, {root: true})
       socioService.getByApellido(apellido).then(response => {
         //Si no hay resultados
         if(response.data.length == 0){
@@ -242,9 +245,11 @@ const socios = {
         }
         commit('setSocios',response.data)
         commit('setSociosFiltrados',state.socios)
+        commit('setCargando', false, {root: true})
       });
     },
     fetchSociosPorNombre({commit, state},nombre){
+      commit('setCargando', true, {root: true})
       socioService.getByName(nombre).then(response => {
         //Si no hay resultados
         if(response.data.length == 0){
@@ -267,6 +272,7 @@ const socios = {
 
         commit('setSocios',response.data)
         commit('setSociosFiltrados',state.socios)
+        commit('setCargando', false, {root: true})
       }); 
     },
     restablecerEdicion({commit, state}){
@@ -356,10 +362,13 @@ const ingresos = {
 
 export default new Vuex.Store({
   state: {
-    
+    cargando: false
   },
   mutations: {
-    
+    setCargando(state, value){
+      console.log("setting cargando")
+      state.cargando = value;
+    }
   },
   actions: {
     
