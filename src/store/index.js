@@ -71,7 +71,8 @@ const creditos = {
         commit("setCreditos", response.data)
         state.creditos.forEach((credito)=>{
             credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
-
+            credito.pagos = credito.pagos.sort((a,b)=>a.nroCuota-b.nroCuota)
+            //Esto no es monto???? de la base de datososea watafak
             credito.ultimaPagada = Math.floor(credito.pagos.reduce((prv, curr)=>{
                 return prv + curr.interes + curr.amortizacion 
             }, 0) / credito.valor_cuota)
@@ -86,6 +87,19 @@ const creditos = {
             credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
                 return prv + curr.interes
             }, 0)
+            console.log(credito)
+            //Codigo para calcular los saldos
+            if(credito.pagos.length>0)
+            credito.pagos.forEach((pago, index)=>{
+              if(index==0){
+                pago.saldo = credito.monto - pago.interes - pago.amortizacion;
+                pago.saldoAmort = credito.montoEntregado - pago.amortizacion;
+              } 
+              else{
+                pago.saldo = credito.pagos[index-1].saldo - pago.interes - pago.amortizacion;
+                pago.saldoAmort = credito.pagos[index-1].saldoAmort -pago.amortizacion;
+              } 
+            })
         })
         
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
