@@ -24,7 +24,7 @@
                     <v-col cols="2">{{credito.socio.rut}}</v-col>
                     <v-col>{{credito.valor_cuota}}</v-col>
                     <v-col>{{credito.nro_cuotas}}</v-col>
-                    <v-col>{{credito.montoEntregado}}</v-col>
+                    <v-col>{{credito.monto}}</v-col>
                     <v-col>{{credito.interes}} %</v-col>
                     <v-col>{{credito.nroFolio}}</v-col>
                 </v-row>

@@ -42,7 +42,9 @@ const creditos = {
   }],
     creditosFiltrados: [{}],
     creditoEditado: {},
-    criterioOrden: "Retraso"
+    criterioOrden: "Retraso",
+    dialogAbono: false,
+    dialogNuevoCredito: false,
   }),
   mutations: {
     setCreditos(state, value){
@@ -57,11 +59,20 @@ const creditos = {
     ordenarPorMonto(state){
       state.creditos = state.creditos.sort((a,b)=> b.montoEntregado-a.montoEntregado)
     },
+    ordenarPorSaldo(state){
+      state.creditos = state.creditos.sort((a,b)=> b.saldo-a.saldo)
+    },
     cambiarOrden(state){
       state.creditos.reverse()
     },
     setCriterioOrden(state, value){
       state.criterioOrden = value
+    },
+    setDialogAbono(state, value){
+      state.dialogAbono = value
+    },
+    setDialogNuevoCredito(state, value){
+      state.dialogNuevoCredito = value
     }
   },
   actions: {
@@ -72,22 +83,23 @@ const creditos = {
         state.creditos.forEach((credito)=>{
             credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
             credito.pagos = credito.pagos.sort((a,b)=>a.nroCuota-b.nroCuota)
-            //Esto no es monto???? de la base de datososea watafak
-            credito.ultimaPagada = Math.floor(credito.pagos.reduce((prv, curr)=>{
-                return prv + curr.interes + curr.amortizacion 
-            }, 0) / credito.valor_cuota)
+            
+            let montoPagado = credito.pagos.reduce((prv, curr)=>{
+              return prv + curr.interes + curr.amortizacion 
+            }, 0)
+            credito.ultimaPagada = Math.floor( montoPagado / credito.valor_cuota)
 
             let vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
             let difference = Date.now() - vencimiento.getTime()
             //Solo si es positivo
             let retraso = Math.floor(difference/(1000*3600*24))
             credito.diasRetraso = retraso > 0 ? retraso : 0
+            credito.saldo = credito.monto - montoPagado
 
             //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
             credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
                 return prv + curr.interes
             }, 0)
-            console.log(credito)
             //Codigo para calcular los saldos
             if(credito.pagos.length>0)
             credito.pagos.forEach((pago, index)=>{
