@@ -17,5 +17,11 @@ export const service = {
     destroy(id) {
         return ApiService.delete(url, { id: id });
     },
+    simularAbono(params){
+        return ApiService.post(url+"/simularAbono", {params: params})
+    },
+    abonar(params){
+        return ApiService.post(url+"/abonar", {params: params})
+    }
 };
 export default service;

@@ -81,27 +81,44 @@ const creditos = {
       creditoService.getAll().then((response)=>{
         commit("setCreditos", response.data)
         state.creditos.forEach((credito)=>{
-            credito.tablaDesarrollo = credito.tablaDesarrollo.sort((a,b)=>a.nro_cuota-b.nro_cuota)
-            credito.pagos = credito.pagos.sort((a,b)=>a.nroCuota-b.nroCuota)
-            
-            let montoPagado = credito.pagos.reduce((prv, curr)=>{
-              return prv + curr.interes + curr.amortizacion 
+          //Calcular la ultima cuota pagada.
+          let ultimaPagada
+          if(credito.pagos.length==0){
+            ultimaPagada = 0
+          }else{
+            const ultimaCuota = credito.pagos[credito.pagos.length-1].nroCuota
+            const pagosUltimaCuota = credito.pagos.filter((item)=>{
+              return item.nroCuota == ultimaCuota
+            })
+            const ultimoDesarrollo = credito.tablaDesarrollo[ultimaCuota - 1]
+            const interesesPagados = pagosUltimaCuota.reduce((prv, curr)=>{
+              return prv + curr.interes
             }, 0)
-            credito.ultimaPagada = Math.floor( montoPagado / credito.valor_cuota)
 
-            let vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
-            let difference = Date.now() - vencimiento.getTime()
+            if(interesesPagados == ultimoDesarrollo.interes){//si es verdad, se asume que amortizacion está pagado
+              //Se debe ver si interes esta total o parcialmente pagado
+              ultimaPagada = ultimoDesarrollo.nro_cuota
+            }else{
+              ultimaPagada = ultimoDesarrollo.nro_cuota-1
+            }
+          }
+          credito.ultimaPagada = ultimaPagada            
+
+          //Calcular el vencimiento del credito
+          const vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
+          const difference = Date.now() - vencimiento.getTime()
             //Solo si es positivo
-            let retraso = Math.floor(difference/(1000*3600*24))
-            credito.diasRetraso = retraso > 0 ? retraso : 0
-            credito.saldo = credito.monto - montoPagado
+          const retraso = Math.floor(difference/(1000*3600*24))
+          credito.diasRetraso = retraso > 0 ? retraso : 0
+          
 
-            //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
-            credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
-                return prv + curr.interes
-            }, 0)
-            //Codigo para calcular los saldos
-            if(credito.pagos.length>0)
+          //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
+          credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
+            return prv + curr.interes
+          }, 0)
+
+          //Codigo para calcular los saldos
+          if(credito.pagos.length>0){
             credito.pagos.forEach((pago, index)=>{
               if(index==0){
                 pago.saldo = credito.monto - pago.interes - pago.amortizacion;
@@ -112,11 +129,33 @@ const creditos = {
                 pago.saldoAmort = credito.pagos[index-1].saldoAmort -pago.amortizacion;
               } 
             })
+            credito.saldo = credito.pagos[credito.pagos.length-1].saldo
+          }else{
+            credito.saldo = credito.monto
+          }
         })
         
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
         commit("setCargando", false, {root:true})
     })
+    },
+    guardarAbono({state, commit}, abono){
+      creditoService.abonar(abono).then((response)=>{
+        const creditoActualizado = response.data;
+        let creditos = state.creditos.filter((value)=>{
+          return value.folio != creditoActualizado.folio
+        })
+        creditos.push(creditoActualizado)
+
+        commit("setCreditos", creditos)
+      })
+    },
+    guardarCredito({state, commit}, credito){
+      creditoService.create(credito).then((response)=>{
+        let creditos = state.creditos
+        creditos.push(response.data)
+        commit("setCreditos", creditos)
+      })
     }
   }
 }
