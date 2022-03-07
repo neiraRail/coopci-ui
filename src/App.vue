@@ -1,5 +1,25 @@
 <template>
   <v-app>
+    <v-dialog
+            v-model="cargando"
+            hide-overlay
+            persistent
+            width="300"
+        >
+        <v-card
+            color="primary"
+            dark
+        >
+            <v-card-text>
+                Solicitando informacion...
+            <v-progress-linear
+                indeterminate
+                color="white"
+                class="mb-1"
+            ></v-progress-linear>
+            </v-card-text>
+        </v-card>
+        </v-dialog>
     <v-app-bar
       app
       color="#70C1B3"
@@ -38,6 +58,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 
 export default {
   name: 'App',
@@ -54,7 +75,8 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
+    ...mapState(["cargando"])
   },
   mounted(){
     //Buscar fecha actual para mantener guardada

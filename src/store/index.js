@@ -139,23 +139,25 @@ const creditos = {
         commit("setCargando", false, {root:true})
     })
     },
-    guardarAbono({state, commit}, abono){
-      creditoService.abonar(abono).then((response)=>{
-        const creditoActualizado = response.data;
-        let creditos = state.creditos.filter((value)=>{
-          return value.folio != creditoActualizado.folio
-        })
-        creditos.push(creditoActualizado)
-
-        commit("setCreditos", creditos)
-      })
+    guardarAbono({commit, dispatch}, abono){
+      commit('setCargando', true, {root: true})
+      creditoService.abonar(abono).then(()=>{
+        dispatch("fetchTodosLosCreditos")
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) 
     },
     guardarCredito({state, commit}, credito){
+      commit('setCargando', true, {root: true})
       creditoService.create(credito).then((response)=>{
         let creditos = state.creditos
         creditos.push(response.data)
         commit("setCreditos", creditos)
-      })
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) 
     }
   }
 }
@@ -373,6 +375,8 @@ const socios = {
         //Guardar todos los socios como socios filtrados
         commit('setSociosFiltrados',state.socios)
         commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
       })      
     },
     fetchSociosPorApellido({commit, state},apellido){
@@ -399,7 +403,9 @@ const socios = {
         commit('setSocios',response.data)
         commit('setSociosFiltrados',state.socios)
         commit('setCargando', false, {root: true})
-      });
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) ;
     },
     fetchSociosPorNombre({commit, state},nombre){
       commit('setCargando', true, {root: true})
@@ -425,6 +431,8 @@ const socios = {
 
         commit('setSocios',response.data)
         commit('setSociosFiltrados',state.socios)
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
         commit('setCargando', false, {root: true})
       }); 
     },
@@ -494,6 +502,7 @@ const ingresos = {
   },
   actions: {
     fetchIngresosPorMes({commit}, {mes, año}){
+      commit('setCargando', true, {root: true})
       ingresoService.getAllByMes(mes, año).then((response)=>{
         const reducerDebe = (pv, cv) => pv.debe + cv.debe
         const reducerHaber = (pv, cv) => pv.haber + cv.haber
@@ -508,7 +517,10 @@ const ingresos = {
           }
         }
         commit('setIngresosMes', response.data)
-      })
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) 
     }
   }
 }

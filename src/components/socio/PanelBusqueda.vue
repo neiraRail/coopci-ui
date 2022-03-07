@@ -3,26 +3,6 @@
         rounded="lg"
         min-height="268"
     >
-        <v-dialog
-          v-model="cargando"
-          hide-overlay
-          persistent
-          width="300"
-        >
-        <v-card
-          color="primary"
-          dark
-        >
-            <v-card-text>
-            Solicitando informacion...
-            <v-progress-linear
-              indeterminate
-              color="white"
-              class="mb-1"
-            ></v-progress-linear>
-            </v-card-text>
-        </v-card>
-        </v-dialog>
     <!-- Buscador -->
         <v-container>
             <v-form 
@@ -81,7 +61,7 @@
     </v-sheet>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
 export default {
     data(){
         return{
@@ -94,8 +74,6 @@ export default {
     },
     methods: {
         fetchSocios(){
-            this.dialog=true;
-            console.log("dialog")
             //Validar el formulario
             if (this.$refs.formulario.validate()){
             //Resetear el número actual
@@ -126,7 +104,6 @@ export default {
         ...mapActions('socios', ['fetchSocioPorId','fetchSociosPorApellido','fetchSociosPorNombre']) 
     },
     computed:{
-        ...mapState(["cargando"])
     },
     mounted(){
         

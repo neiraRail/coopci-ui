@@ -3,26 +3,6 @@
       min-height="70vh"
       rounded="lg"
     >
-        <v-dialog
-            v-model="cargando"
-            hide-overlay
-            persistent
-            width="300"
-        >
-        <v-card
-            color="primary"
-            dark
-        >
-            <v-card-text>
-                Solicitando informacion...
-            <v-progress-linear
-                indeterminate
-                color="white"
-                class="mb-1"
-            ></v-progress-linear>
-            </v-card-text>
-        </v-card>
-        </v-dialog>
         <v-container>
             <v-row v-for="credito of creditos" :key="credito.nroFolio" >
                 <v-col>
@@ -135,6 +115,7 @@
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
+                    <v-btn :disabled="!!!abono.nro_folio" @click="limpiarAbono">Limpiar</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn @click="$store.commit('creditos/setDialogAbono', false)">Salir</v-btn>
                     <v-btn v-if="cuotasSimuladas.length==0" @click="simularAbono" color="blue">Continuar</v-btn>
@@ -146,45 +127,27 @@
         <v-dialog
             v-model="dialogNuevoCredito"
             persistent
+            
+            max-width="600"
         >
             <v-card>
                 <v-card-title>Nuevo Credito</v-card-title>
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-col cols="2">
+                            <v-col cols="3">
                                 <v-text-field 
                                     v-model="creditoNuevo.folio" label="Folio" type="number"
                                     :rules="[() => !!creditoNuevo.folio || 'Obligatorio']"
                                 ></v-text-field>
                             </v-col>
-                            <v-col cols="2">
+                            <v-col cols="3">
                                 <v-text-field 
-                                    v-model="creditoNuevo.monto" label="Monto" type="number"
-                                    :rules="[() => !!creditoNuevo.monto || 'Obligatorio']"
-                                    ></v-text-field>
-                            </v-col>
-                            <v-col cols="2">
-                                <v-text-field 
-                                    v-model="creditoNuevo.nro_cuotas" label="Nro cuotas" type="number"
-                                    :rules="[() => !!creditoNuevo.nro_cuotas || 'Obligatorio']"
-                                    ></v-text-field>
-                            </v-col>
-                            <v-col cols="2">
-                                <v-text-field 
-                                    v-model="creditoNuevo.nro_socio" label="Socio"
-                                    
+                                    v-model="creditoNuevo.nro_socio" label="Nro de socio"
                                     :rules="[() => !!creditoNuevo.nro_socio || 'Obligatorio']"
                                     ></v-text-field>
                             </v-col>
-                            <v-col cols="2">
-                                <v-text-field 
-                                    v-model="creditoNuevo.interes" label="Interes" type="number"
-                                    sufix="%"
-                                    :rules="[() => !!creditoNuevo.interes || 'Obligatorio']"
-                                    ></v-text-field>
-                            </v-col>
-                            <v-col>
+                            <v-col >
                                 <v-menu
                                     v-model="menuFecha"
                                     :close-on-content-click="false"
@@ -210,11 +173,27 @@
                                     ></v-date-picker>
                                 </v-menu>
                             </v-col>
-                            <v-col>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="3">
                                 <v-text-field 
-                                v-model="abono.monto" label="Abono" type="number" prefix="$"
-                                :rules="[() => !!abono.monto || 'Obligatorio']"
-                                ></v-text-field>
+                                    v-model="creditoNuevo.interes" label="Interes" type="number"
+                                    suffix="%"
+                                    :rules="[() => !!creditoNuevo.interes || 'Obligatorio']"
+                                    ></v-text-field>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-text-field 
+                                    v-model="creditoNuevo.nro_cuotas" label="Nro cuotas" type="number"
+                                    :rules="[() => !!creditoNuevo.nro_cuotas || 'Obligatorio']"
+                                    ></v-text-field>
+                            </v-col>
+                            <v-col >
+                                <v-text-field 
+                                    v-model="creditoNuevo.monto" label="Monto entregado" type="number"
+                                    prefix="$"
+                                    :rules="[() => !!creditoNuevo.monto || 'Obligatorio']"
+                                    ></v-text-field>
                             </v-col>
                         </v-row>
                     </v-container>
@@ -231,7 +210,7 @@
 
 <script>
 
-import { mapState } from 'vuex'
+import { mapState} from 'vuex'
 import creditoService from '@/services/credito.service'
 export default {
     data(){
@@ -268,12 +247,14 @@ export default {
         simularAbono(){
             //Se llama al servicio localmente porque no es necesario actualizar
             //ninguno de los states.
-            console.log(this.abono)
+            this.$store.commit("setCargando", true)
             creditoService.simularAbono(this.abono).then((response)=>{
                 console.log(response)
                 this.cuotasSimuladas = response.data;
+                this.$store.commit("setCargando", false)
             }).catch((error)=>{
                 console.log(error)
+                this.$store.commit("setCargando", false)
             })
         },
         guardarAbono(){
@@ -286,10 +267,18 @@ export default {
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
             //despues de esta operación
             this.$store.dispatch("creditos/guardarCredito")
+        },
+        limpiarAbono(){
+            this.abono = {
+                nro_folio: '',
+                nro_ci: '',
+                fecha: '',
+                monto: ''
+            }
+            this.cuotasSimuladas = [];
         }
     },
     computed:{
-        ...mapState(["cargando"]),
         ...mapState("creditos",["creditos", "criterioOrden", "dialogAbono", "dialogNuevoCredito"])
     },
     mounted(){
