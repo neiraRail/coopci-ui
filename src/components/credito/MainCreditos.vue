@@ -98,6 +98,7 @@
                                 <v-text-field 
                                 v-model="abono.monto" label="Abono" type="number" prefix="$"
                                 :rules="[() => !!abono.monto || 'Obligatorio']"
+                                @change="cuotasSimuladas = []"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -115,7 +116,7 @@
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn :disabled="!!!abono.nro_folio" @click="limpiarAbono">Limpiar</v-btn>
+                    <v-btn :disabled="!!!abono.nro_folio && !!!abono.nro_ci && !!!abono.monto && !!!abono.fecha" @click="limpiarAbono">Limpiar</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn @click="$store.commit('creditos/setDialogAbono', false)">Salir</v-btn>
                     <v-btn v-if="cuotasSimuladas.length==0" @click="simularAbono" color="blue">Continuar</v-btn>
@@ -137,14 +138,14 @@
                         <v-row>
                             <v-col cols="3">
                                 <v-text-field 
-                                    v-model="creditoNuevo.folio" label="Folio" type="number"
-                                    :rules="[() => !!creditoNuevo.folio || 'Obligatorio']"
+                                    v-model="creditoNuevo.nroFolio" label="Folio" type="number"
+                                    :rules="[() => !!creditoNuevo.nroFolio || 'Obligatorio']"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="3">
                                 <v-text-field 
-                                    v-model="creditoNuevo.nro_socio" label="Nro de socio"
-                                    :rules="[() => !!creditoNuevo.nro_socio || 'Obligatorio']"
+                                    v-model="creditoNuevo.socio" label="Nro de socio"
+                                    :rules="[() => !!creditoNuevo.socio || 'Obligatorio']"
                                     ></v-text-field>
                             </v-col>
                             <v-col >
@@ -158,17 +159,17 @@
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                        v-model="abono.fecha"
+                                        v-model="creditoNuevo.fecha_otorgamiento"
                                         label="Fecha otorgamiento"
                                         prepend-icon="mdi-calendar"
                                         readonly
                                         v-bind="attrs"
                                         v-on="on"
-                                        :rules="[() => !!abono.fecha || 'Obligatorio']"
+                                        :rules="[() => !!creditoNuevo.fecha_otorgamiento || 'Obligatorio']"
                                     ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                    v-model="abono.fecha"
+                                    v-model="creditoNuevo.fecha_otorgamiento"
                                     @input="menuFecha = false"
                                     ></v-date-picker>
                                 </v-menu>
@@ -224,11 +225,12 @@ export default {
             },
             cuotasSimuladas: [],
             creditoNuevo: {
-                nro_folio: '',
+                nroFolio: '',
+                socio: '',
                 nro_cuotas: '',
                 monto: '',
                 interes: '',
-                fechaOtorgamiento: ''
+                fecha_otorgamiento: ''
             }
 
         }
@@ -266,7 +268,8 @@ export default {
         guardarCredito(){
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
             //despues de esta operación
-            this.$store.dispatch("creditos/guardarCredito")
+            this.$store.dispatch("creditos/guardarCredito", this.creditoNuevo)
+            this.$store.commit("creditos/setDialogNuevoCredito", false)
         },
         limpiarAbono(){
             this.abono = {

@@ -114,7 +114,7 @@ const creditos = {
 
           //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
           credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
-            return prv + curr.interes
+            return prv + curr.amortizacion
           }, 0)
 
           //Codigo para calcular los saldos
@@ -148,12 +148,10 @@ const creditos = {
         commit('setCargando', false, {root: true})
       }) 
     },
-    guardarCredito({state, commit}, credito){
+    guardarCredito({commit, dispatch}, credito){
       commit('setCargando', true, {root: true})
-      creditoService.create(credito).then((response)=>{
-        let creditos = state.creditos
-        creditos.push(response.data)
-        commit("setCreditos", creditos)
+      creditoService.create(credito).then(()=>{
+        dispatch("fetchTodosLosCreditos")
         commit('setCargando', false, {root: true})
       }).catch(()=>{
         commit('setCargando', false, {root: true})
