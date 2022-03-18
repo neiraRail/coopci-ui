@@ -12,33 +12,35 @@
                         <v-container >
                         <v-row class="text-caption">
                             <v-col cols="1" :class="criterioOrden=='Folio' ? 'font-weight-black':''">Folio</v-col>
-                            <v-col cols="6" class="text-center">Nombre del socio</v-col>
+                            <v-col cols="5" class="text-center">Nombre del socio</v-col>
+                            <v-col class="text-center">Valor cuota</v-col>
                             <v-col class="text-right">Nro de cuotas</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Monto' ? 'font-weight-black':''">Monto</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Saldo' ? 'font-weight-black':''">Saldo</v-col>
                         </v-row>
                         <v-row class="">
                             <v-col cols="1" :class="criterioOrden=='Folio' ? 'font-weight-black':''">{{credito.nroFolio}}</v-col>
-                            <v-col cols="6" class="text-center">{{credito.socio.nombre1}} {{credito.socio.nombre2}} {{credito.socio.apellido1}} {{credito.socio.apellido2}}</v-col>
+                            <v-col cols="5" class="text-center">{{credito.socio.nombre1}} {{credito.socio.nombre2}} {{credito.socio.apellido1}} {{credito.socio.apellido2}}</v-col>
+                            <v-col class="text-center">$ {{credito.valor_cuota}}</v-col>
                             <v-col class="text-right">{{credito.nro_cuotas}}</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Monto' ? 'font-weight-black':''">$ {{credito.monto}}</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Saldo' ? 'font-weight-black':''">$ {{credito.saldo}}</v-col>
                         </v-row>
                         <v-row class="text-caption">
-                            <v-col cols="3" class="text-center">Vencimiento sig. cuota</v-col>
+                            <v-col  class="text-center">Vencimiento</v-col>
+                            <v-col  class="text-center">Vencimiento sig. cuota</v-col>
                             <v-col cols="2" class="text-center" :class="criterioOrden=='Retraso' ? 'font-weight-black':''">Dias Retraso</v-col>
                             <v-col cols="2" class="text-right">Ultima pagada</v-col>
-                            <v-col class="text-right">Cuotas faltantes</v-col> 
-                            <v-col class="text-right">Cuotas atrasadas</v-col>
-                            <v-col class="text-right">Valor cuota</v-col>
+                            <v-col cols="2" class="text-right">Cuotas faltantes</v-col> 
+                            <v-col cols="2" class="text-right">Cuotas atrasadas</v-col>
                         </v-row>
                         <v-row >
-                            <v-col cols="3" class="text-center">{{credito.tablaDesarrollo[credito.ultimaPagada].vencimiento}}</v-col>
+                            <v-col  class="text-center">{{credito.tablaDesarrollo[credito.tablaDesarrollo.length-1].vencimiento}}</v-col>
+                            <v-col class="text-center">{{credito.tablaDesarrollo[credito.ultimaPagada].vencimiento}}</v-col>
                             <v-col cols="2" class="text-center" :class="criterioOrden=='Retraso' ? 'font-weight-black':''">{{credito.diasRetraso}}</v-col>
                             <v-col cols="2" class="text-right">{{credito.ultimaPagada}}</v-col>
-                            <v-col class="text-right">{{credito.nro_cuotas - credito.ultimaPagada}}</v-col>
-                            <v-col class="text-right">{{Math.floor(credito.diasRetraso/30)}}</v-col>
-                            <v-col class="text-right">$ {{credito.valor_cuota}}</v-col>
+                            <v-col cols="2" class="text-right">{{credito.nro_cuotas - credito.ultimaPagada}}</v-col>
+                            <v-col cols="2" class="text-right">{{Math.floor(credito.diasRetraso/30)}}</v-col>
                         </v-row>
                         </v-container>
                     </v-sheet>
