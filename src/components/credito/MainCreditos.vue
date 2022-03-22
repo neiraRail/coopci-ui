@@ -278,8 +278,8 @@ export default {
             //despues de esta operación
             //Verificar si es con comprobante o no
             if(this.sinCi){
-                console.log("Abonar sin ci")
-                //this.$store.dispatch("creditos/guardarAbonoSinCi", this.abono)
+                //console.log("Abonar sin ci")
+                this.$store.dispatch("creditos/guardarAbonoSinCi", this.abono)
                 this.$store.commit("creditos/setDialogAbono", false) 
             }else{
                 this.$store.dispatch("creditos/guardarAbono", this.abono)

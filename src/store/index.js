@@ -81,8 +81,6 @@ const creditos = {
       creditoService.getAll().then((response)=>{
         commit("setCreditos", response.data)
         state.creditos.forEach((credito)=>{
-               
-
           //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
           credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
             return prv + curr.amortizacion
@@ -104,6 +102,8 @@ const creditos = {
           }else{
             credito.saldo = credito.monto
           }
+
+          credito.pagosJuntos = credito.pagos.concat(credito.pagosSinCI)
         })
         
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
