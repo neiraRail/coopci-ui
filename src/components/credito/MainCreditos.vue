@@ -7,7 +7,7 @@
             <v-row v-for="credito of creditos" :key="credito.nroFolio" >
                 <v-col>
                     <v-hover v-slot="{ hover }">
-                    <v-sheet rounded="lg" :color="color(credito.diasRetraso)" min-height="10vh" :elevation="hover ? 12:2" @click="verCredito(credito)"
+                    <v-sheet rounded="lg" :color="color(credito.diasRetraso)" min-height="10vh" :elevation="hover ? 12:2" @dblclick="verCredito(credito)"
                     >
                         <v-container >
                         <v-row class="text-caption">
