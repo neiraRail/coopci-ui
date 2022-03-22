@@ -65,9 +65,9 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="2">
-                                <v-text-field 
+                                <v-text-field :disabled="sinCi"
                                     v-model="abono.nro_ci" label="CI" type="number"
-                                    :rules="[() => !!abono.nro_ci || 'Obligatorio']"
+                                    :rules="[() => !!abono.nro_ci  || 'Obligatorio']"
                                     ></v-text-field>
                             </v-col>
                             <v-col>
@@ -104,6 +104,11 @@
                                 ></v-text-field>
                             </v-col>
                         </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-checkbox v-model="sinCi" label="Sin CI aún" @click="abono.nro_ci = ''"></v-checkbox>
+                            </v-col>
+                        </v-row>
                         <v-row v-if="cuotasSimuladas.length>0">
                             <v-data-table
                                 :headers="[
@@ -115,13 +120,18 @@
                                 item-key="nroCuota"
                                 ></v-data-table>
                         </v-row>
+                        <v-row>
+                            <v-alert v-if="!!error"
+                            type="error"
+                            >Algun tipo de error, revisa los datos</v-alert>
+                        </v-row>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn :disabled="!!!abono.nro_folio && !!!abono.nro_ci && !!!abono.monto && !!!abono.fecha" @click="limpiarAbono">Limpiar</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn @click="$store.commit('creditos/setDialogAbono', false)">Salir</v-btn>
-                    <v-btn v-if="cuotasSimuladas.length==0" @click="simularAbono" color="blue">Continuar</v-btn>
+                    <v-btn :disabled="!!!abono.nro_folio || !!!abono.monto || !!!abono.fecha || (!!!abono.nro_ci && !sinCi)" v-if="cuotasSimuladas.length==0" @click="simularAbono" color="blue">Continuar</v-btn>
                     <v-btn v-if="cuotasSimuladas.length>0" @click="guardarAbono" color="green">Guardar</v-btn>
                 </v-card-actions>
             </v-card>
@@ -233,7 +243,9 @@ export default {
                 monto: '',
                 interes: '',
                 fecha_otorgamiento: ''
-            }
+            },
+            sinCi: false,
+            error: ''
 
         }
     },
@@ -245,7 +257,7 @@ export default {
             else return 'green lighten-4'
         },
         verCredito(credito){
-            console.log(credito.nroFolio)
+            console.log(credito)
             this.$router.push({name: "VerCredito", params: {credito: credito}})
         },
         simularAbono(){
@@ -257,15 +269,22 @@ export default {
                 this.cuotasSimuladas = response.data;
                 this.$store.commit("setCargando", false)
             }).catch((error)=>{
-                console.log(error)
+                this.error = error
                 this.$store.commit("setCargando", false)
             })
         },
         guardarAbono(){
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
             //despues de esta operación
-            this.$store.dispatch("creditos/guardarAbono", this.abono)
-            this.$store.commit("creditos/setDialogAbono", false)
+            //Verificar si es con comprobante o no
+            if(this.sinCi){
+                console.log("Abonar sin ci")
+                //this.$store.dispatch("creditos/guardarAbonoSinCi", this.abono)
+                this.$store.commit("creditos/setDialogAbono", false) 
+            }else{
+                this.$store.dispatch("creditos/guardarAbono", this.abono)
+                this.$store.commit("creditos/setDialogAbono", false) 
+            }
         },
         guardarCredito(){
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
@@ -280,6 +299,7 @@ export default {
                 fecha: '',
                 monto: ''
             }
+            this.error = ''
             this.cuotasSimuladas = [];
         }
     },
