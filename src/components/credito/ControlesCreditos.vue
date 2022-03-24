@@ -4,7 +4,7 @@
     <v-container>
       <v-row>
         <v-col cols="12"><v-btn block @click.stop="mostrarDialogAbono">Pago abono</v-btn></v-col>
-        <v-col cols="12"><v-btn block @click.stop="mostrarDialogNuevoCredito">Nuevo credito</v-btn></v-col>
+        <v-col cols="12"><v-btn disabled block @click.stop="mostrarDialogNuevoCredito">Nuevo credito</v-btn></v-col>
       </v-row>
       <br>
       <v-divider></v-divider>
