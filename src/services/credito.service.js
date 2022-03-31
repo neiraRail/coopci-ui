@@ -25,6 +25,9 @@ export const service = {
     },
     abonarSinCi(params){
         return ApiService.post(url+"/abonarSinCi", {params: params})
+    },
+    getAllPagosSinCi(){
+        return ApiService.get(url+"/pagosSinCi", {id: ''})
     }
 };
 export default service;

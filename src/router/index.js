@@ -82,6 +82,12 @@ const routes = [
     // lazy-loaded
     component: () => import('../views/VerCredito.vue'),
     props: true
+  },
+  {
+    path: '/VerCuotasSinCi',
+    name: 'VerCuotasSinCi',
+    // lazy-loaded
+    component: () => import('../views/VistaPagosSinCi.vue')
   }
   
 ]

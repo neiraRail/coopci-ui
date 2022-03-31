@@ -39,12 +39,13 @@ const creditos = {
       "ultimaPagada": 0,
       "diasRetraso": '',
       "montoEntregado": ''
-  }],
+    }],
     creditosFiltrados: [{}],
     creditoEditado: {},
     criterioOrden: "Retraso",
     dialogAbono: false,
     dialogNuevoCredito: false,
+    pagosSinCi: []
   }),
   mutations: {
     setCreditos(state, value){
@@ -73,9 +74,22 @@ const creditos = {
     },
     setDialogNuevoCredito(state, value){
       state.dialogNuevoCredito = value
+    },
+    setPagosSinCi(state, value){
+      state.pagosSinCi = value;
     }
   },
   actions: {
+    fetchTodosLosPagosSinCi({commit}){
+      commit('setCargando', true, {root: true})
+      creditoService.getAllPagosSinCi().then((response)=>{
+        commit("setPagosSinCi", response.data)
+        commit("setCargando", false, {root:true})
+        console.log(response.data)
+      }).catch(()=>{
+        commit("setCargando", false, {root:true})
+      })
+    },
     fetchTodosLosCreditos({state, commit}){
       commit('setCargando', true, {root: true})
       creditoService.getAll().then((response)=>{
@@ -108,7 +122,9 @@ const creditos = {
         
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
         commit("setCargando", false, {root:true})
-    })
+      }).catch(()=>{
+        commit("setCargando", false, {root:true})
+      })
     },
     guardarAbono({commit, dispatch}, abono){
       commit('setCargando', true, {root: true})
