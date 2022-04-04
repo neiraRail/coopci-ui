@@ -83,7 +83,17 @@ const creditos = {
     fetchTodosLosPagosSinCi({commit}){
       commit('setCargando', true, {root: true})
       creditoService.getAllPagosSinCi().then((response)=>{
-        commit("setPagosSinCi", response.data)
+        let pppci = []
+        let ant = 0
+        for(let pago of response.data){
+          if(pago.pseudoci != ant){
+            pppci.push([])
+            ant = pago.pseudoci
+          }
+          pppci[pppci.length-1].push(pago)
+        }
+        commit("setPagosSinCi", pppci)
+
         commit("setCargando", false, {root:true})
         console.log(response.data)
       }).catch(()=>{
