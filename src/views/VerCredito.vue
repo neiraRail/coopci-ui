@@ -57,7 +57,7 @@
                         </v-row>
                         <v-row v-for="(pago, index) in credito.pagosJuntos" :key="index">
                             <v-col cols="3">{{pago.fecha}}</v-col>
-                            <v-col>{{pago.ingreso_id}}</v-col>
+                            <v-col>{{pago.ingresoId}}</v-col>
                             <v-col>{{pago.nroCuota}}</v-col>
                             <v-col>{{pago.interes + pago.amortizacion}}</v-col>
                             <v-col>{{pago.saldo}}</v-col>
