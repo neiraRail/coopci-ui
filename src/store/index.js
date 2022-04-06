@@ -162,6 +162,23 @@ const creditos = {
       }).catch(()=>{
         commit('setCargando', false, {root: true})
       }) 
+    },
+    asignarCi({state, commit}, item){
+      commit('setCargando', true, {root: true})
+      const payload = {
+        folio: item[0].nroFolio,
+        pseudoCi: item[0].pseudoci,
+        nroCi: item.ciAsignado
+      }
+      creditoService.asignarCi(payload).then(()=>{
+        const index = state.pagosSinCi.indexOf(item);
+        if (index > -1) {
+          state.pagosSinCi.splice(index, 1);
+        }        
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) 
     }
   }
 }
