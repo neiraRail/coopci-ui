@@ -285,6 +285,7 @@ export default {
                 this.$store.dispatch("creditos/guardarAbono", this.abono)
                 this.$store.commit("creditos/setDialogAbono", false) 
             }
+            this.limpiarAbono()
         },
         guardarCredito(){
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
