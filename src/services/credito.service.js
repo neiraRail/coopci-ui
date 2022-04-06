@@ -28,6 +28,9 @@ export const service = {
     },
     getAllPagosSinCi(){
         return ApiService.get(url+"/pagosSinCi", {id: ''})
+    },
+    asignarCi(params){
+        return ApiService.post(url+"/otorgarCi", {params: params})
     }
 };
 export default service;
