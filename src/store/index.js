@@ -128,6 +128,9 @@ const creditos = {
           }
 
           credito.pagosJuntos = credito.pagos.concat(credito.pagosSinCI)
+          credito.pagosJuntos.sort(function(a, b){
+            return a.nroCuota - b.nroCuota;
+          });
         })
         
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
