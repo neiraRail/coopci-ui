@@ -67,8 +67,7 @@ export default {
     links: [
       {name: 'Home', to: '/Home'},
       {name: 'Socios', to: '/Buscador'},
-      {name: 'Creditos', to: '/Creditos'},
-      {name: 'PagoSinCi', to: '/VerCuotasSinCi'}
+      {name: 'Creditos', to: '/Creditos'}
       ]
   }),
   computed: {
