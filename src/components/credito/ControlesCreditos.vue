@@ -1,6 +1,5 @@
 <template>
-    
-    <v-sheet rounded="lg" min-height="160" style="position: fixed">
+    <v-sheet rounded="lg" min-height="160">
     <v-container>
       <v-row>
         <v-col cols="12"><v-btn block @click.stop="mostrarDialogAbono">Pago abono</v-btn></v-col>
