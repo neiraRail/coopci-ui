@@ -21,8 +21,8 @@
             sm="12"
             md="9"
           >
-            <MainCreditos v-if="sections[selected].name=='Vigentes'"/>
-            <PagosSinCi v-if="sections[selected].name=='Pagos sin CI'"/>
+            <MainCreditos v-if="selected=='0'"/>
+            <PagosSinCi v-if="selected=='2'"/>
           </v-col>
 
           <v-col
