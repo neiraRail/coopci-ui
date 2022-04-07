@@ -55,9 +55,9 @@
                             <v-col></v-col>
                             <v-col>{{credito.monto}}</v-col>
                         </v-row>
-                        <v-row v-for="(pago, index) in credito.pagos" :key="index">
+                        <v-row v-for="(pago, index) in credito.pagosJuntos" :key="index">
                             <v-col cols="3">{{pago.fecha}}</v-col>
-                            <v-col>{{pago.ingreso_id}}</v-col>
+                            <v-col>{{pago.ingresoId}}</v-col>
                             <v-col>{{pago.nroCuota}}</v-col>
                             <v-col>{{pago.interes + pago.amortizacion}}</v-col>
                             <v-col>{{pago.saldo}}</v-col>
@@ -77,7 +77,7 @@
                             <v-col></v-col>
                             <v-col>{{credito.montoEntregado}}</v-col>
                         </v-row>
-                        <v-row v-for="(pago, index) in credito.pagos" :key="index">
+                        <v-row v-for="(pago, index) in credito.pagosJuntos" :key="index">
                             <v-col>{{pago.nroCuota}}</v-col>
                             <v-col>{{pago.interes}}</v-col>
                             <v-col>{{pago.amortizacion}}</v-col>
@@ -99,7 +99,7 @@ export default {
             default(){
                 return {
                     nroFolio: '',
-                    pagos: []
+                    pagosJuntos: []
                 }
             }
         }

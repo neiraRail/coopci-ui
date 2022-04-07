@@ -7,38 +7,40 @@
             <v-row v-for="credito of creditos" :key="credito.nroFolio" >
                 <v-col>
                     <v-hover v-slot="{ hover }">
-                    <v-sheet rounded="lg" :color="color(credito.diasRetraso)" min-height="10vh" :elevation="hover ? 12:2" @click="verCredito(credito)"
+                    <v-sheet rounded="lg" :color="color(credito.diasRetraso)" min-height="10vh" :elevation="hover ? 12:2" @dblclick="verCredito(credito)"
                     >
                         <v-container >
                         <v-row class="text-caption">
                             <v-col cols="1" :class="criterioOrden=='Folio' ? 'font-weight-black':''">Folio</v-col>
-                            <v-col cols="6" class="text-center">Nombre del socio</v-col>
+                            <v-col cols="5" class="text-center">Nombre del socio</v-col>
+                            <v-col class="text-center">Valor cuota</v-col>
                             <v-col class="text-right">Nro de cuotas</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Monto' ? 'font-weight-black':''">Monto</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Saldo' ? 'font-weight-black':''">Saldo</v-col>
                         </v-row>
                         <v-row class="">
                             <v-col cols="1" :class="criterioOrden=='Folio' ? 'font-weight-black':''">{{credito.nroFolio}}</v-col>
-                            <v-col cols="6" class="text-center">{{credito.socio.nombre1}} {{credito.socio.nombre2}} {{credito.socio.apellido1}} {{credito.socio.apellido2}}</v-col>
+                            <v-col cols="5" class="text-center">{{credito.socio.nombre1}} {{credito.socio.nombre2}} {{credito.socio.apellido1}} {{credito.socio.apellido2}}</v-col>
+                            <v-col class="text-center">$ {{credito.valor_cuota}}</v-col>
                             <v-col class="text-right">{{credito.nro_cuotas}}</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Monto' ? 'font-weight-black':''">$ {{credito.monto}}</v-col>
                             <v-col class="text-right" :class="criterioOrden=='Saldo' ? 'font-weight-black':''">$ {{credito.saldo}}</v-col>
                         </v-row>
                         <v-row class="text-caption">
-                            <v-col cols="3" class="text-center">Vencimiento sig. cuota</v-col>
+                            <v-col  class="text-center">Vencimiento</v-col>
+                            <v-col  class="text-center">Vencimiento sig. cuota</v-col>
                             <v-col cols="2" class="text-center" :class="criterioOrden=='Retraso' ? 'font-weight-black':''">Dias Retraso</v-col>
                             <v-col cols="2" class="text-right">Ultima pagada</v-col>
-                            <v-col class="text-right">Cuotas faltantes</v-col> 
-                            <v-col class="text-right">Cuotas atrasadas</v-col>
-                            <v-col class="text-right">Valor cuota</v-col>
+                            <v-col cols="2" class="text-right">Cuotas faltantes</v-col> 
+                            <v-col cols="2" class="text-right">Cuotas atrasadas</v-col>
                         </v-row>
                         <v-row >
-                            <v-col cols="3" class="text-center">{{credito.tablaDesarrollo[credito.ultimaPagada].vencimiento}}</v-col>
+                            <v-col  class="text-center">{{credito.tablaDesarrollo[credito.tablaDesarrollo.length-1].vencimiento}}</v-col>
+                            <v-col class="text-center">{{credito.tablaDesarrollo[credito.ultimaPagada].vencimiento}}</v-col>
                             <v-col cols="2" class="text-center" :class="criterioOrden=='Retraso' ? 'font-weight-black':''">{{credito.diasRetraso}}</v-col>
                             <v-col cols="2" class="text-right">{{credito.ultimaPagada}}</v-col>
-                            <v-col class="text-right">{{credito.nro_cuotas - credito.ultimaPagada}}</v-col>
-                            <v-col class="text-right">{{Math.floor(credito.diasRetraso/30)}}</v-col>
-                            <v-col class="text-right">$ {{credito.valor_cuota}}</v-col>
+                            <v-col cols="2" class="text-right">{{credito.nro_cuotas - credito.ultimaPagada}}</v-col>
+                            <v-col cols="2" class="text-right">{{Math.floor(credito.diasRetraso/30)}}</v-col>
                         </v-row>
                         </v-container>
                     </v-sheet>
@@ -63,9 +65,9 @@
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="2">
-                                <v-text-field 
+                                <v-text-field :disabled="sinCi"
                                     v-model="abono.nro_ci" label="CI" type="number"
-                                    :rules="[() => !!abono.nro_ci || 'Obligatorio']"
+                                    :rules="[() => !!abono.nro_ci  || 'Obligatorio']"
                                     ></v-text-field>
                             </v-col>
                             <v-col>
@@ -102,6 +104,11 @@
                                 ></v-text-field>
                             </v-col>
                         </v-row>
+                        <v-row>
+                            <v-col>
+                                <v-checkbox v-model="sinCi" label="Sin CI aún" @click="abono.nro_ci = ''"></v-checkbox>
+                            </v-col>
+                        </v-row>
                         <v-row v-if="cuotasSimuladas.length>0">
                             <v-data-table
                                 :headers="[
@@ -113,13 +120,18 @@
                                 item-key="nroCuota"
                                 ></v-data-table>
                         </v-row>
+                        <v-row>
+                            <v-alert v-if="!!error"
+                            type="error"
+                            >Algun tipo de error, revisa los datos</v-alert>
+                        </v-row>
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
                     <v-btn :disabled="!!!abono.nro_folio && !!!abono.nro_ci && !!!abono.monto && !!!abono.fecha" @click="limpiarAbono">Limpiar</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn @click="$store.commit('creditos/setDialogAbono', false)">Salir</v-btn>
-                    <v-btn v-if="cuotasSimuladas.length==0" @click="simularAbono" color="blue">Continuar</v-btn>
+                    <v-btn :disabled="!!!abono.nro_folio || !!!abono.monto || !!!abono.fecha || (!!!abono.nro_ci && !sinCi)" v-if="cuotasSimuladas.length==0" @click="simularAbono" color="blue">Continuar</v-btn>
                     <v-btn v-if="cuotasSimuladas.length>0" @click="guardarAbono" color="green">Guardar</v-btn>
                 </v-card-actions>
             </v-card>
@@ -231,7 +243,9 @@ export default {
                 monto: '',
                 interes: '',
                 fecha_otorgamiento: ''
-            }
+            },
+            sinCi: false,
+            error: ''
 
         }
     },
@@ -243,7 +257,7 @@ export default {
             else return 'green lighten-4'
         },
         verCredito(credito){
-            console.log(credito.nroFolio)
+            console.log(credito)
             this.$router.push({name: "VerCredito", params: {credito: credito}})
         },
         simularAbono(){
@@ -255,15 +269,23 @@ export default {
                 this.cuotasSimuladas = response.data;
                 this.$store.commit("setCargando", false)
             }).catch((error)=>{
-                console.log(error)
+                this.error = error
                 this.$store.commit("setCargando", false)
             })
         },
         guardarAbono(){
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
             //despues de esta operación
-            this.$store.dispatch("creditos/guardarAbono", this.abono)
-            this.$store.commit("creditos/setDialogAbono", false)
+            //Verificar si es con comprobante o no
+            if(this.sinCi){
+                //console.log("Abonar sin ci")
+                this.$store.dispatch("creditos/guardarAbonoSinCi", this.abono)
+                this.$store.commit("creditos/setDialogAbono", false) 
+            }else{
+                this.$store.dispatch("creditos/guardarAbono", this.abono)
+                this.$store.commit("creditos/setDialogAbono", false) 
+            }
+            this.limpiarAbono()
         },
         guardarCredito(){
             //Llamar a servicio a través del store porque es necesario actualizar los creditos
@@ -278,6 +300,7 @@ export default {
                 fecha: '',
                 monto: ''
             }
+            this.error = ''
             this.cuotasSimuladas = [];
         }
     },

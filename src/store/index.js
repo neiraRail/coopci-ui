@@ -39,12 +39,13 @@ const creditos = {
       "ultimaPagada": 0,
       "diasRetraso": '',
       "montoEntregado": ''
-  }],
+    }],
     creditosFiltrados: [{}],
     creditoEditado: {},
     criterioOrden: "Retraso",
     dialogAbono: false,
     dialogNuevoCredito: false,
+    pagosSinCi: []
   }),
   mutations: {
     setCreditos(state, value){
@@ -73,45 +74,37 @@ const creditos = {
     },
     setDialogNuevoCredito(state, value){
       state.dialogNuevoCredito = value
+    },
+    setPagosSinCi(state, value){
+      state.pagosSinCi = value;
     }
   },
   actions: {
+    fetchTodosLosPagosSinCi({commit}){
+      commit('setCargando', true, {root: true})
+      creditoService.getAllPagosSinCi().then((response)=>{
+        let pppci = []
+        let ant = 0
+        for(let pago of response.data){
+          if(pago.pseudoci != ant){
+            pppci.push([])
+            ant = pago.pseudoci
+          }
+          pppci[pppci.length-1].push(pago)
+        }
+        commit("setPagosSinCi", pppci)
+
+        commit("setCargando", false, {root:true})
+        console.log(response.data)
+      }).catch(()=>{
+        commit("setCargando", false, {root:true})
+      })
+    },
     fetchTodosLosCreditos({state, commit}){
       commit('setCargando', true, {root: true})
       creditoService.getAll().then((response)=>{
         commit("setCreditos", response.data)
         state.creditos.forEach((credito)=>{
-          //Calcular la ultima cuota pagada.
-          let ultimaPagada
-          if(credito.pagos.length==0){
-            ultimaPagada = 0
-          }else{
-            const ultimaCuota = credito.pagos[credito.pagos.length-1].nroCuota
-            const pagosUltimaCuota = credito.pagos.filter((item)=>{
-              return item.nroCuota == ultimaCuota
-            })
-            const ultimoDesarrollo = credito.tablaDesarrollo[ultimaCuota - 1]
-            const interesesPagados = pagosUltimaCuota.reduce((prv, curr)=>{
-              return prv + curr.interes
-            }, 0)
-
-            if(interesesPagados == ultimoDesarrollo.interes){//si es verdad, se asume que amortizacion está pagado
-              //Se debe ver si interes esta total o parcialmente pagado
-              ultimaPagada = ultimoDesarrollo.nro_cuota
-            }else{
-              ultimaPagada = ultimoDesarrollo.nro_cuota-1
-            }
-          }
-          credito.ultimaPagada = ultimaPagada            
-
-          //Calcular el vencimiento del credito
-          const vencimiento = new Date(credito.tablaDesarrollo[credito.ultimaPagada].vencimiento)
-          const difference = Date.now() - vencimiento.getTime()
-            //Solo si es positivo
-          const retraso = Math.floor(difference/(1000*3600*24))
-          credito.diasRetraso = retraso > 0 ? retraso : 0
-          
-
           //Codigo para calcular monto entregado. Esto deberia estar en la base de datos:
           credito.montoEntregado = credito.tablaDesarrollo.reduce((prv, curr)=>{
             return prv + curr.amortizacion
@@ -133,11 +126,18 @@ const creditos = {
           }else{
             credito.saldo = credito.monto
           }
+
+          credito.pagosJuntos = credito.pagos.concat(credito.pagosSinCI)
+          credito.pagosJuntos.sort(function(a, b){
+            return a.nroCuota - b.nroCuota;
+          });
         })
         
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
         commit("setCargando", false, {root:true})
-    })
+      }).catch(()=>{
+        commit("setCargando", false, {root:true})
+      })
     },
     guardarAbono({commit, dispatch}, abono){
       commit('setCargando', true, {root: true})
@@ -148,10 +148,36 @@ const creditos = {
         commit('setCargando', false, {root: true})
       }) 
     },
+    guardarAbonoSinCi({commit, dispatch}, abono){
+      commit('setCargando', true, {root: true})
+      creditoService.abonarSinCi(abono).then(()=>{
+        dispatch("fetchTodosLosCreditos")
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) 
+    },
     guardarCredito({commit, dispatch}, credito){
       commit('setCargando', true, {root: true})
       creditoService.create(credito).then(()=>{
         dispatch("fetchTodosLosCreditos")
+        commit('setCargando', false, {root: true})
+      }).catch(()=>{
+        commit('setCargando', false, {root: true})
+      }) 
+    },
+    asignarCi({state, commit}, item){
+      commit('setCargando', true, {root: true})
+      const payload = {
+        folio: item[0].nroFolio,
+        pseudoCi: item[0].pseudoci,
+        nroCi: item.ciAsignado
+      }
+      creditoService.asignarCi(payload).then(()=>{
+        const index = state.pagosSinCi.indexOf(item);
+        if (index > -1) {
+          state.pagosSinCi.splice(index, 1);
+        }        
         commit('setCargando', false, {root: true})
       }).catch(()=>{
         commit('setCargando', false, {root: true})

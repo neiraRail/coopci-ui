@@ -29,6 +29,8 @@
             <Navegador />
             
             <Filtro ref="Filtros"/>
+
+            <Adicional />
           </v-col>
         </v-row>
       </v-container>
@@ -59,7 +61,8 @@ export default {
       ResultadoBuscador:() => import("@/components/socio/ResultadoBuscador"),
       Navegador:() => import("@/components/socio/Navegador"),
       Filtro:() => import("@/components/socio/Filtro"), 
-      PanelBusqueda: () => import('@/components/socio/PanelBusqueda')     
+      PanelBusqueda: () => import('@/components/socio/PanelBusqueda'),
+      Adicional: () => import('@/components/socio/PanelAdicional')     
     },
     mounted(){
       if (!this.currentUser) {

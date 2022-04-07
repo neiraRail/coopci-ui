@@ -66,10 +66,9 @@ export default {
   data: () => ({
     links: [
       {name: 'Home', to: '/Home'},
-      {name: 'Buscar', to: '/Buscador'},
-      {name: 'Editar', to: '/Editor'},
-      {name: 'Subir', to: '/Subir'},
-      {name: 'Creditos', to: '/Creditos'}
+      {name: 'Socios', to: '/Buscador'},
+      {name: 'Creditos', to: '/Creditos'},
+      {name: 'PagoSinCi', to: '/VerCuotasSinCi'}
       ]
   }),
   computed: {
