@@ -129,6 +129,8 @@ const creditos = {
         commit("setCargando", false, {root:true})
         console.log(response.data)
       }).catch(()=>{
+        commit('setError', "Hubo un error al buscar esta información", {root: true})
+        commit('setDialogError', true, {root: true})
         commit("setCargando", false, {root:true})
       })
     },
@@ -168,6 +170,8 @@ const creditos = {
         commit("setCreditos", state.creditos.sort((a,b) => b.diasRetraso-a.diasRetraso))
         commit("setCargando", false, {root:true})
       }).catch(()=>{
+        commit('setError', "Hubo un error al buscar esta información", {root: true})
+        commit('setDialogError', true, {root: true})
         commit("setCargando", false, {root:true})
       })
     },
@@ -177,6 +181,8 @@ const creditos = {
         dispatch("fetchTodosLosCreditos")
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "Hubo un error al realizar esta acción", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       }) 
     },
@@ -186,6 +192,8 @@ const creditos = {
         dispatch("fetchTodosLosCreditos")
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "Hubo un error al realizar esta acción", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       }) 
     },
@@ -195,6 +203,8 @@ const creditos = {
         dispatch("fetchTodosLosCreditos")
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "Hubo un error al realizar esta acción", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       }) 
     },
@@ -212,6 +222,8 @@ const creditos = {
         }        
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "Hubo un error al realizar esta acción", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       }) 
     }
