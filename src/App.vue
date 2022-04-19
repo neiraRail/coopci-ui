@@ -19,7 +19,7 @@
             ></v-progress-linear>
             </v-card-text>
         </v-card>
-        </v-dialog>
+    </v-dialog>
     <v-app-bar
       app
       color="#70C1B3"
@@ -51,6 +51,7 @@
       ></v-avatar>
     </v-app-bar>
     <v-main class="grey lighten-3">
+      <v-alert type="error" dismissible v-model="dialogError"> {{error}}</v-alert>
       <router-view/>
     </v-main>
     
@@ -74,7 +75,15 @@ export default {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
     },
-    ...mapState(["cargando"])
+    dialogError: {
+      get(){
+        return this.$store.state.dialogError;
+      },
+      set(val){
+        this.$store.commit("setDialogError", val)
+      }
+    },
+    ...mapState(["cargando", "error"])
   },
   mounted(){
     //Buscar fecha actual para mantener guardada

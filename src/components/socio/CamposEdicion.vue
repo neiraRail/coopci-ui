@@ -32,7 +32,7 @@
       </v-col>
       <v-col cols="1" md="1" class="nombre-dato full-all">Nro</v-col> 
       <v-col cols="1" md="1" class="field">
-        <v-text-field dense
+        <v-text-field dense :disabled="true"
           v-model="socioEditado.nro_registro"
           :rules="[!/([\D])/.test(socioEditado.nro_registro)]"
         ></v-text-field>
@@ -219,101 +219,111 @@ import enumsService from '@/services/enums.service'
 export default {
   data(){
     return {
-      socioEditado: {
-        nro_registro: '',
-        tipo_persona: {
-            tipo_persona_nombre: ""
-        },
-        nombre1: "",
-        nombre2: "",
-        apellido1: "",
-        apellido2: "",
-        rut: "",
-        direccion: "",
-        direccion_comuna: {
-            comuna_nombre: "",
-            region: {
-                region_nombre: "",
-                pais: {
-                    pais_nombre: ""
-                }
-            }
-        },
-        sexo: {
-          sexo_nombre: ""
-        },
-        fecha_nac: "",
-        estado_civil: {
-            estado_civil_nombre: ""
-        },
-        nivel_educacional: {
-            nivel_educacional_nombre: ""
-        },
-        profesion_oficio: "",
-        sub_ocupacion: {
-            ocupacion_id: '',
-            ocupacion: "",
-            macro_ocp_id: {
-                macro_ocp_id: '',
-                maco_ocp_nombre: ""
-            }
-        },
-        motivacion: "",
-        part_trafkintun: '',
-        actividadProductiva: [],
-        organizacionSocio: [],
-        empleoSocio: [],
-        intencionCredito: [],
-        telefonos: [{
-          telefono: "",
-          tipo_tel:{
-              tipo_tel_nombre: ""
-          }  
-        }],
-        correos: [{
-            correo: "",
-            prioridad: ''
-        }]
-      },
-      dialog: false,
-      menu_date: false,
-      comunas: [{
-        comuna_nombre: "",
-        region: {
-          region_nombre: "",
-          pais: {
-            pais_nombre: ""
-          }
-        }
-      }],
-      niveles: [{
-        nivel_educacional_nombre: ""
-      }],
-      tipos: [{
-        tipo_persona_nombre: ""
-      }],
-      estados: [{
-        estado_civil_nombre: ""
-      }],
-      sexos: [{
-        sexo_nombre: ""
-      }]
+      // socioEditado: {
+      //   nro_registro: '',
+      //   tipo_persona: {
+      //       tipo_persona_nombre: ""
+      //   },
+      //   nombre1: "",
+      //   nombre2: "",
+      //   apellido1: "",
+      //   apellido2: "",
+      //   rut: "",
+      //   direccion: "",
+      //   direccion_comuna: {
+      //       comuna_nombre: "",
+      //       region: {
+      //           region_nombre: "",
+      //           pais: {
+      //               pais_nombre: ""
+      //           }
+      //       }
+      //   },
+      //   sexo: {
+      //     sexo_nombre: ""
+      //   },
+      //   fecha_nac: "",
+      //   estado_civil: {
+      //       estado_civil_nombre: ""
+      //   },
+      //   nivel_educacional: {
+      //       nivel_educacional_nombre: ""
+      //   },
+      //   profesion_oficio: "",
+      //   sub_ocupacion: {
+      //       ocupacion_id: '',
+      //       ocupacion: "",
+      //       macro_ocp_id: {
+      //           macro_ocp_id: '',
+      //           maco_ocp_nombre: ""
+      //       }
+      //   },
+      //   motivacion: "",
+      //   part_trafkintun: '',
+      //   actividadProductiva: [],
+      //   organizacionSocio: [],
+      //   empleoSocio: [],
+      //   intencionCredito: [],
+      //   telefonos: [{
+      //     telefono: "",
+      //     tipo_tel:{
+      //         tipo_tel_nombre: ""
+      //     }  
+      //   }],
+      //   correos: [{
+      //       correo: "",
+      //       prioridad: ''
+      //   }]
+      // },
+      // dialog: false,
+      // menu_date: false,
+      // comunas: [{
+      //   comuna_nombre: "",
+      //   region: {
+      //     region_nombre: "",
+      //     pais: {
+      //       pais_nombre: ""
+      //     }
+      //   }
+      // }],
+      // niveles: [{
+      //   nivel_educacional_nombre: ""
+      // }],
+      // tipos: [{
+      //   tipo_persona_nombre: ""
+      // }],
+      // estados: [{
+      //   estado_civil_nombre: ""
+      // }],
+      // sexos: [{
+      //   sexo_nombre: ""
+      // }]
     }
   },
-  watch:{
-    socioEditado:{
-      handler(val){
-        this.$store.commit('socios/setSocioEditado', val)
+  computed: {
+    socioEditado: {
+      get(){
+        return this.$store.state.socios.socioEditado
       },
-      deep: true
-    },
-    "$store.state.socios.socioEditado":{
-      handler(val){
-        this.socioEditado = val
-      },
-      deep: true
+      set(val){
+        this.$store.commit("socios/setSocioEditado", val)
+      }
     }
   },
+  // watch:{
+  //   socioEditado:{
+  //     handler(val){
+  //       this.$store.commit('socios/setSocioEditado', val)
+  //     },
+  //     deep: true
+  //   },
+  //   "$store.state.socios.socioEditado":{
+  //     handler(val){
+  //       this.socioEditado = val
+  //     },
+  //     deep: true
+  //   }
+  // },
   methods: {
     fetchComunas(){
       enumsService.getComunas().then((response)=>{

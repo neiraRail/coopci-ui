@@ -422,6 +422,8 @@ const socios = {
         if(response.data.length == 0 || response.data === undefined){
           //Aqui prodia ir un mensaje especial
           console.log("len 0 o undefinedd")
+          commit('setError', "No se encontró un socio con este ID", {root: true})
+          commit('setDialogError', true, {root: true})
           return
         }
         for(const atr in response.data){
@@ -432,6 +434,8 @@ const socios = {
         commit('setSociosFiltrados',state.socios)
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "No se encontró un socio con este ID", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       })      
     },
@@ -441,6 +445,9 @@ const socios = {
         //Si no hay resultados
         if(response.data.length == 0){
             //Aqui podria ir un mensaje especial
+            commit('setError', "No se encontraron socios con este apellido", {root: true})
+            commit('setDialogError', true, {root: true})
+            commit('setCargando', false, {root: true})
             return
         }
         //Ordenar los socios por su numero de socio
@@ -460,6 +467,8 @@ const socios = {
         commit('setSociosFiltrados',state.socios)
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "Hubo un problema al buscar la información", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       }) ;
     },
@@ -469,6 +478,9 @@ const socios = {
         //Si no hay resultados
         if(response.data.length == 0){
             //Aqui podria ir un mensaje especial
+            commit('setError', "No se encontró un socio con este nombre", {root: true})
+            commit('setDialogError', true, {root: true})
+            commit('setCargando', false, {root: true})
             return
         }
         //Ordenar los socios por su numero de socio
@@ -489,6 +501,8 @@ const socios = {
         commit('setSociosFiltrados',state.socios)
         commit('setCargando', false, {root: true})
       }).catch(()=>{
+        commit('setError', "Hubo un problema al buscar la información", {root: true})
+        commit('setDialogError', true, {root: true})
         commit('setCargando', false, {root: true})
       }); 
     },
@@ -583,11 +597,19 @@ const ingresos = {
 
 export default new Vuex.Store({
   state: {
-    cargando: false
+    cargando: false,
+    error: '',
+    dialogError: false
   },
   mutations: {
     setCargando(state, value){
       state.cargando = value;
+    },
+    setError(state, value){
+      state.error = value
+    },
+    setDialogError(state, value){
+      state.dialogError = value
     }
   },
   actions: {
