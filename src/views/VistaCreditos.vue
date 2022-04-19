@@ -22,7 +22,7 @@
             md="9"
           >
             <MainCreditos v-if="selected=='0'"/>
-            <PagosSinCi v-if="selected=='2'"/>
+            <PagosSinCi v-if="selected=='3'"/>
           </v-col>
 
           <v-col
@@ -47,6 +47,9 @@ export default {
             sections: [
               {
                 name: "Vigentes"
+              },
+              {
+                name: "Vencidos"
               },
               {
                 name: "Castigados"
