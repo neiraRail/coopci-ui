@@ -7,7 +7,7 @@
     <v-container>
         <v-row>
             <v-col>
-                <v-btn block @click="$router.push('/Editor')" :disabled="sociosFiltrados.length<1"> Editar </v-btn>
+                <v-btn block @click="$router.push('/Editor')" :disabled="sociosFiltrados.length<=1 && sociosFiltrados[0].nro_registro == ''"> Editar </v-btn>
             </v-col>
         </v-row>
         <v-row>
