@@ -19,14 +19,14 @@
                     <v-col>Folio</v-col>
                 </v-row>
                 <v-row class="text-caption">
-                    <v-col cols="3">{{credito.socio.nombre1}} {{credito.socio.apellido1}} {{credito.socio.apellido2}}</v-col>
-                    <v-col>{{credito.socio.nro_registro}}</v-col>
-                    <v-col cols="2">{{credito.socio.rut}}</v-col>
-                    <v-col>{{credito.valor_cuota}}</v-col>
-                    <v-col>{{credito.nro_cuotas}}</v-col>
-                    <v-col>{{credito.monto}}</v-col>
-                    <v-col>{{credito.interes}} %</v-col>
-                    <v-col>{{credito.nroFolio}}</v-col>
+                    <v-col cols="3">{{creditoSeleccionado.socio.nombre1}} {{creditoSeleccionado.socio.apellido1}} {{creditoSeleccionado.socio.apellido2}}</v-col>
+                    <v-col>{{creditoSeleccionado.socio.nro_registro}}</v-col>
+                    <v-col cols="2">{{creditoSeleccionado.socio.rut}}</v-col>
+                    <v-col>{{creditoSeleccionado.valor_cuota}}</v-col>
+                    <v-col>{{creditoSeleccionado.nro_cuotas}}</v-col>
+                    <v-col>{{creditoSeleccionado.monto}}</v-col>
+                    <v-col>{{creditoSeleccionado.interes}} %</v-col>
+                    <v-col>{{creditoSeleccionado.nroFolio}}</v-col>
                 </v-row>
             </v-container>
         </v-sheet>
@@ -53,9 +53,9 @@
                             <v-col></v-col>
                             <v-col></v-col>
                             <v-col></v-col>
-                            <v-col>{{credito.monto}}</v-col>
+                            <v-col>{{creditoSeleccionado.monto}}</v-col>
                         </v-row>
-                        <v-row v-for="(pago, index) in credito.pagosJuntos" :key="index">
+                        <v-row v-for="(pago, index) in creditoSeleccionado.pagosJuntos" :key="index">
                             <v-col cols="3">{{pago.fecha}}</v-col>
                             <v-col>{{pago.ingresoId}}</v-col>
                             <v-col>{{pago.nroCuota}}</v-col>
@@ -75,9 +75,9 @@
                             <v-col></v-col>
                             <v-col></v-col>
                             <v-col></v-col>
-                            <v-col>{{credito.montoEntregado}}</v-col>
+                            <v-col>{{creditoSeleccionado.montoEntregado}}</v-col>
                         </v-row>
-                        <v-row v-for="(pago, index) in credito.pagosJuntos" :key="index">
+                        <v-row v-for="(pago, index) in creditoSeleccionado.pagosJuntos" :key="index">
                             <v-col>{{pago.nroCuota}}</v-col>
                             <v-col>{{pago.interes}}</v-col>
                             <v-col>{{pago.amortizacion}}</v-col>
@@ -93,21 +93,15 @@
     </v-sheet>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
-    props: {
-        credito: {
-            default(){
-                return {
-                    nroFolio: '',
-                    pagosJuntos: []
-                }
-            }
-        }
-    },
     data(){
         return {
 
         }
+    },
+    computed: {
+        ...mapState("creditos", ["creditoSeleccionado"])
     }
 }
 </script>

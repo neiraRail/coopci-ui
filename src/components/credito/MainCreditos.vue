@@ -257,8 +257,8 @@ export default {
             else return 'green lighten-4'
         },
         verCredito(credito){
-            console.log(credito)
-            this.$router.push({name: "VerCredito", params: {credito: credito}})
+            this.$store.commit("creditos/setSeleccionado", credito)
+            this.$router.push({name: "VerCredito"})
         },
         simularAbono(){
             //Se llama al servicio localmente porque no es necesario actualizar

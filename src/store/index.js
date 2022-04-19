@@ -41,6 +41,35 @@ const creditos = {
       "montoEntregado": ''
     }],
     creditosFiltrados: [{}],
+    creditoSeleccionado: {
+      "nroFolio": '',
+      "socio": {
+          "nro_registro": '',
+          "nombre1": "",
+          "nombre2": "",
+          "apellido1": "",
+          "apellido2": "",
+          "rut": "",
+          "telefonos": [],
+          "correos": []
+      },
+      "nro_cuotas": '',
+      "monto": '',
+      "interes": '',
+      "fecha_otorgamiento": "7",
+      "fecha_vencimiento": "",
+      "comision": 0,
+      "valor_cuota": '',
+      "estado": {
+          "estado_id": 1,
+          "estado_nombre": "Vigente"
+      },
+      "tablaDesarrollo": [{'vencimiento': ''}],
+      "pagos": [],
+      "ultimaPagada": 0,
+      "diasRetraso": '',
+      "montoEntregado": ''
+    },
     creditoEditado: {},
     criterioOrden: "Retraso",
     dialogAbono: false,
@@ -50,6 +79,9 @@ const creditos = {
   mutations: {
     setCreditos(state, value){
       state.creditos = value
+    },
+    setSeleccionado(state, value){
+      state.creditoSeleccionado = value
     },
     ordenarPorFolio(state){
       state.creditos = state.creditos.sort((a,b) => b.nroFolio-a.nroFolio)
