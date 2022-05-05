@@ -65,9 +65,9 @@ export default {
       Adicional: () => import('@/components/socio/PanelAdicional')     
     },
     mounted(){
-      if (!this.currentUser) {
-        this.$router.push('/login');
-      }
+      // if (!this.currentUser) {
+      //   this.$router.push('/login');
+      // }
     }
 }
 </script>

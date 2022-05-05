@@ -15,7 +15,7 @@ const apiService = {
     });
   },
   postFile(route, file){
-    this.setHeader();
+    //this.setHeader();
     const file_formdata = new FormData()
     file_formdata.append('file', file)
     return swisApi.post(`${route}`, file_formdata, {
@@ -33,7 +33,7 @@ const apiService = {
     });
   },
   get(route, { slug = "" }) {
-    this.setHeader();
+    //this.setHeader();
     return swisApi.get(`${route}/${slug}`).catch(error => {
       throw new Error(`ApiService Error: ${error}`);
     });

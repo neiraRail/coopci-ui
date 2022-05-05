@@ -105,10 +105,10 @@ export default {
     this.$store.commit('ingresos/setFiltroAño', new Date().getFullYear())
     console.log("Mounting...")
 
-    
-    if(!this.loggedIn){
-      this.$router.push('/login');
-    }
+    // Autentificación deshabilitada
+    // if(!this.loggedIn){
+    //   this.$router.push('/login');
+    // }
 
     // window.addEventListener('beforeunload', ()=>{
     //   console.log("logout")
