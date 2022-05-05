@@ -30,7 +30,7 @@
             
             <Filtro ref="Filtros"/>
 
-            <Adicional />
+            <!-- Descomentar para agregar funcionalidad de subir y editar <Adicional /> -->
           </v-col>
         </v-row>
       </v-container>
@@ -62,7 +62,7 @@ export default {
       Navegador:() => import("@/components/socio/Navegador"),
       Filtro:() => import("@/components/socio/Filtro"), 
       PanelBusqueda: () => import('@/components/socio/PanelBusqueda'),
-      Adicional: () => import('@/components/socio/PanelAdicional')     
+      //Adicional: () => import('@/components/socio/PanelAdicional')     
     },
     mounted(){
       // if (!this.currentUser) {
