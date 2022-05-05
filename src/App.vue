@@ -66,7 +66,7 @@ export default {
 
   data: () => ({
     links: [
-      {name: 'Home', to: '/Home'},
+      // {name: 'Home', to: '/Home'},
       {name: 'Socios', to: '/Buscador'},
       {name: 'Creditos', to: '/Creditos'},
       ]
